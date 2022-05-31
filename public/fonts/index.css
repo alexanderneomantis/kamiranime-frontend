@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "DINAlternate-Bold";
+  font-style: normal;
+  src: local("DINAlternate-Bold"),
+    url("DINAlternate-Bold.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Din-STD-Engschrift";
+  font-style: normal;
+  src: local("Din-STD-Engschrift"),
+    url("Din-STD-Engschrift.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "DINPro-Regular";
+  font-style: normal;
+  src: local("DINPro-Regular"),
+    url("DINPro-Regular.otf") format("opentype");
+}
