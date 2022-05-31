@@ -18,6 +18,7 @@ export default function DeyOffer({ eventTime, interval }) {
     return () => {
       clearInterval(timerRef.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventTime]);
 
   return (

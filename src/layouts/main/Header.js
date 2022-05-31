@@ -2,7 +2,6 @@ import {Link as RouterLink, useLocation} from "react-router-dom";
 // material
 import {styled} from "@mui/material/styles";
 import {AppBar, Box, IconButton, Toolbar} from "@mui/material";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 // hooks
 import useOffSetTop from "../../hooks/useOffSetTop";
 // components

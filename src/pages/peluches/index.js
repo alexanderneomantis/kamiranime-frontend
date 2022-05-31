@@ -1,7 +1,7 @@
 import {styled} from "@mui/material/styles";
 import Page from '../../components/Page'
 import Product from "../../components/Product";
-import {Box, Container, Grid, Typography} from "@mui/material";
+import {Box, Container, Grid} from "@mui/material";
 import SortDesktop from "../../components/products/SortDektop";
 import SortMobile from "../../components/products/SortMobile";
 import FiltersMobile from "../../components/products/FiltersMobile";
