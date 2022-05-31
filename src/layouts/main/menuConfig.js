@@ -33,9 +33,9 @@ const menuConfig = [
     path: "/acrilicos",
   },
   {
-    title: "Lampara",
+    title: "Lamparas",
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: "/lampara",
+    path: "/lamparas",
   },
 ];
 

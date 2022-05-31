@@ -1,11 +1,11 @@
-import {Box, Card, CardContent, CardMedia, IconButton, Paper, Typography} from "@mui/material";
+import {Box, IconButton, Paper, Typography} from "@mui/material";
 import thumbnail from '../assets/img/thumbnail.png'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-export default function Product({product}) {
+export default function Product({product = {}}) {
   return (
-    <Paper>
+    <Paper sx={{ maxWidth: '280px' }}>
       <Box
         component="img"
         src={thumbnail}
