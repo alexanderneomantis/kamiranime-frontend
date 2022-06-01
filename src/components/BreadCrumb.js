@@ -5,7 +5,7 @@ export default function BreadCrumb() {
   const {pathname} = useLocation()
 
   function formatPath(txt) {
-    return txt.replace(/\b\w/g, c => c.toUpperCase()).replace('/', '')
+    return txt.replace(/\b\w/g, c => c.toUpperCase()).replace('/', ' ').replace('/', ' / ').replaceAll('-', ' ')
   }
   console.log(useLocation())
   return (
