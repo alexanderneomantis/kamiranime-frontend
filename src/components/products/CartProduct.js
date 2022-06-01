@@ -11,14 +11,10 @@ export default function CartProduct() {
   const navigate = useNavigate()
   const [count, setCount] = useState(1)
 
-  function goToDetail() {
-    navigate('/figuras')
-  }
-
-  function updateCartHandler(item, value) {
-    setCount(value)
-    // ...
-  }
+  // function updateCartHandler(item, value) {
+  //   setCount(value)
+  //   // ...
+  // }
 
   function removeItemHandler(item) {
     // ...
@@ -28,12 +24,12 @@ export default function CartProduct() {
     <>
       <MHidden width='mdDown'>
         <TableCell>
-          <Box onClick={() => goToDetail()} sx={{ cursor: 'pointer' }}>
+          <Box onClick={() => navigate('/figuras/detalle-002')} sx={{ cursor: 'pointer' }}>
             <Box component='img' src={thumbnail} alt='Arumi figura small' width={50} height={50}/>
           </Box>
         </TableCell>
         <TableCell>
-          <Typography sx={{ cursor: 'pointer' }} onClick={() => goToDetail()}>Arumi figura small</Typography>
+          <Typography sx={{ cursor: 'pointer' }} onClick={() => navigate('/figuras/detalle-002')}>Arumi figura small</Typography>
         </TableCell>
         <TableCell>
           <Box sx={{display: 'flex', alignItems: 'center', my: 3, justifyContent: 'center', width: 'fit-content'}}>
@@ -53,10 +49,10 @@ export default function CartProduct() {
       </MHidden>
       <MHidden width='mdUp'>
         <Paper elevation={2} sx={{textAlign: 'center', my: 2, py: 2}}>
-          <Box onClick={() => goToDetail()} style={{display: 'flex', justifyContent: 'center', cursor: 'pointer'}}>
+          <Box onClick={() => navigate('/figuras/detalle-002')} style={{display: 'flex', justifyContent: 'center', cursor: 'pointer'}}>
             <Box component='img' src={thumbnail} alt='Arumi figura small'/>
           </Box>
-          <Typography sx={{ cursor: 'pointer' }} variant='h6' onClick={() => goToDetail()}>Arumi figura small</Typography>
+          <Typography sx={{ cursor: 'pointer' }} variant='h6' onClick={() => navigate('/figuras/detalle-002')}>Arumi figura small</Typography>
           <Box sx={{display: 'flex', alignItems: 'center', my: 3, justifyContent: 'center'}}>
             <IconButton onClick={() => setCount(prevState => --prevState)} color='primary'><RemoveIcon/></IconButton>
             <Typography sx={{width: '50px'}} align='center'>{count}</Typography>

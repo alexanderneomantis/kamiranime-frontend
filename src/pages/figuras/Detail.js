@@ -20,6 +20,7 @@ import {useState} from 'react';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Product from "../../components/products/Product";
+import { useNavigate } from 'react-router-dom'
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -34,6 +35,7 @@ const RootStyle = styled(Page)(({theme}) => ({
 }));
 
 export default function Detail() {
+  const navigate = useNavigate();
   const [count, setCount] = useState(1);
   const [tabValue, setTabValue] = useState(1);
 
@@ -75,7 +77,7 @@ export default function Detail() {
               <IconButton onClick={() => setCount(prevState => ++prevState)} color='primary'><AddIcon/></IconButton>
             </Box>
             <Box sx={{display: 'flex', justifyContent: 'center'}}>
-              <Button variant='contained' sx={{color: '#fff'}}>Agregar al carrito</Button>
+              <Button variant='contained' sx={{color: '#fff'}} onClick={() => navigate('/carrito')}>Agregar al carrito</Button>
             </Box>
             <Box sx={{mt: 5}}>
               <Typography>Categoria: Figuras</Typography>
@@ -90,12 +92,14 @@ export default function Detail() {
             </Tabs>
           </Box>
           <TabPanel tabValue={tabValue} index={0}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of Lorem.
+            <Box sx={{ my: 5 }}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+              industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+              scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
+              Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+              Aldus PageMaker including versions of Lorem.
+            </Box>
           </TabPanel>
           <TabPanel tabValue={tabValue} index={1}>
             <Box sx={{backgroundColor: '#637381', px: 4, py: 2, width: 'fit-content'}}>

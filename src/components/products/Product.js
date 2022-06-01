@@ -23,7 +23,7 @@ export default function Product({product = {}}) {
   const navigate = useNavigate()
 
   function goToDetail() {
-    navigate('detalle-002')
+    navigate('/figuras/detalle-002')
   }
 
   return (
