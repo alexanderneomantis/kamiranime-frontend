@@ -20,7 +20,6 @@ const BoxStyle = styled(Box)(() => ({
 
 const AccordionStyle = styled(Accordion)(() => ({
   borderBottom: "solid",
-  borderRight: "solid",
   borderWidth: 2,
   borderColor: grey[100],
   borderRadius: "0 !important",

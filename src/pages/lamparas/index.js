@@ -1,6 +1,6 @@
 import {styled} from "@mui/material/styles";
 import Page from '../../components/Page'
-import Product from "../../components/Product";
+import Product from "../../components/products/Product";
 import {Box, Container, Grid} from "@mui/material";
 import SortDesktop from "../../components/products/SortDektop";
 import SortMobile from "../../components/products/SortMobile";
