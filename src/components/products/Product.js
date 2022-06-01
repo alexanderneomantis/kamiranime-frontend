@@ -1,5 +1,5 @@
 import {Box, IconButton, Paper, styled, Typography} from "@mui/material";
-import thumbnail from '../assets/img/thumbnail.png'
+import thumbnail from '../../assets/img/thumbnail.png'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';

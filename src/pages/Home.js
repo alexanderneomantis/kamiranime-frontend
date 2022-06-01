@@ -1,6 +1,6 @@
 import {styled} from "@mui/material/styles";
 import Page from '../components/Page'
-import Product from "../components/Product";
+import Product from "../components/products/Product";
 import { Container, Grid, Typography} from "@mui/material";
 import DeyOffer from "../components/DayOffer";
 import HowWeWork from "../components/home/HowWeWork";

@@ -19,7 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {useState} from 'react';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Product from "../../components/Product";
+import Product from "../../components/products/Product";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
