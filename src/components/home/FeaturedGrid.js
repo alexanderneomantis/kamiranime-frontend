@@ -6,7 +6,7 @@ export default function FeaturedGrid() {
   const { data, loading } = useGetFeatured()
 
   return (
-    <Grid container>
+    <Grid container spacing={2} sx={{ my: 5, py: 5 }}>
       {loading && <p>loading...</p>}
       {
         !loading &&data && data.length > 0 &&data.map((el) => (

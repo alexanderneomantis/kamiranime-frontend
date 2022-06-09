@@ -67,23 +67,23 @@ export default function DeyOffer() {
                 <Box>
                   <Typography fontSize='3.5rem' fontWeight='bold' color='primary.dark'
                               align='center'>{duration.days()}</Typography>
-                  <Typography variant='h1' color='primary.dark'
+                  <Typography  fontSize='2.5rem' fontWeight='bold' color='primary.dark'
                               align='center'>Dias</Typography>
                 </Box>
                 <Box sx={{mx: 2}}>
                   <Typography fontSize='3.5rem' fontWeight='bold' color='primary.dark'
                               align='center'>{duration.hours()}</Typography>
-                  <Typography variant='h1' color='primary.dark' align='center'>Hrs</Typography>
+                  <Typography  fontSize='2.5rem' fontWeight='bold'  color='primary.dark' align='center'>Hrs</Typography>
                 </Box>
                 <Box sx={{mx: 2}}>
                   <Typography fontSize='3.5rem' fontWeight='bold' color='primary.dark'
                               align='center'>{duration.minutes()}</Typography>
-                  <Typography variant='h1' color='primary.dark' align='center'>Min</Typography>
+                  <Typography fontSize='2.5rem' fontWeight='bold'  color='primary.dark' align='center'>Min</Typography>
                 </Box>
                 <Box>
                   <Typography fontSize='3.5rem' fontWeight='bold' color='primary.dark'
                               align='center'>{duration.seconds()}</Typography>
-                  <Typography variant='h1' color='primary.dark' align='center'>Seg</Typography>
+                  <Typography  fontSize='2.5rem' fontWeight='bold'  color='primary.dark' align='center'>Seg</Typography>
                 </Box>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center', mt: 5}}>

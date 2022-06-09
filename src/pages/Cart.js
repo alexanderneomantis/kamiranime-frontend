@@ -202,7 +202,7 @@ export default function Cart() {
                 <Typography variant='h3' color='primary'>$ {addCommas(removeNonNumeric(total))}</Typography>
               </Box>
 
-              <Button variant='contained' sx={{color: '#fff', width: '100%', mt: 3}}>
+              <Button  color='primary' sx={{width: '100%', mt: 3}}>
                 Comprar
               </Button>
 

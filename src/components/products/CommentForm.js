@@ -5,10 +5,12 @@ import { useFormik, Form, FormikProvider } from "formik";
 import { FocusError } from 'focus-formik-error'
 import useSendComment from "../../hooks/api/useSendComment";
 import {CommentSchema} from "../../utils/formSchemas";
+import {useState} from "react";
 
 export default function CommentForm({ product, reload }) {
   const {send} = useSendComment(() => reload())
   const formSavedData = JSON.parse(localStorage.getItem('formFields'))
+  const [isChecked, setChecked] = useState(!!formSavedData)
 
   const formik = useFormik({
     initialValues: {
@@ -35,8 +37,10 @@ export default function CommentForm({ product, reload }) {
   function handleSaveName(e) {
     console.log(e.target.checked, formik.values.name, formik.values.email)
     if (e.target.checked) {
+      setChecked(true)
       localStorage.setItem('formFields', JSON.stringify({name: formik.values.name, email: formik.values.email}))
     } else {
+      setChecked(false)
       localStorage.removeItem('formFields')
     }
   }
@@ -44,7 +48,7 @@ export default function CommentForm({ product, reload }) {
 
   return (
     <FormikProvider value={formik}>
-      <Form autocomplete='off' noValidate onSubmit={handleSubmit}>
+      <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
         <FocusError formik={formik} />
         <Box>
           <Typography sx={{mt: 3, mb: 2}}>Tu Review*</Typography>
@@ -87,13 +91,13 @@ export default function CommentForm({ product, reload }) {
 
           <FormControlLabel
             sx={{my: 5}}
-            control={<Checkbox disabled={!formik.values.name || !formik.values.email} checked={formSavedData} onChange={handleSaveName} />}
+            control={<Checkbox disabled={!formik.values.name || !formik.values.email} checked={isChecked} onChange={handleSaveName} />}
             label={<Typography variant="body1">Guarda mi nombre y página en este buscador para la próxima vez que
               comente.</Typography>}
           />
 
         </Box>
-        <Button variant='contained' type='sunmit' sx={{color: '#fff'}} disabled={isSubmitting || !isValid}>
+        <Button sx={{ backgroundColor: '#DB2E71', color: '#fff' }} type='submit' disabled={isSubmitting || !isValid}>
           {isSubmitting && 'Enviando...'}
           {!isSubmitting && 'Enviar'}
         </Button>

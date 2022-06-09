@@ -18,3 +18,29 @@
   src: local("DINPro-Regular"),
     url("DINPro-Regular.otf") format("opentype");
 }
+
+@font-face {
+  font-family: "Aberana";
+  font-style: normal;
+  src: local("Aberana"),
+    url("Aberana.ttf") format("opentype");
+}
+@font-face {
+  font-family: "AvenirLTStd-black";
+  font-style: normal;
+  src: local("AvenirLTStd-black"),
+    url("AvenirLTStd-black.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "AvenirLTStd-Book";
+  font-style: normal;
+  src: local("AvenirLTStd-Book"),
+    url("AvenirLTStd-Book.otf") format("opentype");
+}
+@font-face {
+  font-family: "AvenirLTStd-Roman";
+  font-style: normal;
+  src: local("AvenirLTStd-Roman"),
+    url("AvenirLTStd-Roman.otf") format("opentype");
+}

@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import groq from 'groq'
 import {client} from "../../utils/client";
 
-const query = groq `*[_type == 'category' ]`
+const query = groq `*[_type == 'category' && isFeatured == true ]`
 
 export default function useGetCategories() {
   const [data, setData] = useState([]);

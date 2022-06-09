@@ -30,7 +30,7 @@ export default function Home() {
         <Typography variant='h4' sx={{color: theme => theme.palette.primary.dark, pb: 2}}>Mejores ventas <span style={{
           paddingBottom: '5px',
           marginLeft: '1rem',
-          borderBottom: '4px solid #DB2E71'
+          borderBottom: '4px solid #F8EDF6'
         }}>Hot Sales</span></Typography>
         <FeaturedGrid />
       </Container>

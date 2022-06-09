@@ -20,9 +20,10 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-const FONT_PRIMARY = "DINPro-Regular"; // Local Font
-const FONT_HEADERS = "Din-STD-Engschrift"; // Local Font
-const FONT_BOLD = "DINAlternate-Bold"; // Local Font
+const FONT_PRIMARY = "AvenirLTStd-Roman"; // Local Font
+// const FONT_BOOK = "AvenirLTStd-Book"; // Local Font
+const FONT_HEADERS = " Aberana"; // Local Font
+const FONT_BOLD = "AvenirLTStd-black"; // Local Font
 
 const typography = {
   fontFamily: FONT_PRIMARY,
@@ -31,44 +32,42 @@ const typography = {
   fontWeightBold: 700,
   h1: {
     color: grey[800],
-    textTransform: "uppercase",
+    // textTransform: "uppercase",
     fontFamily: FONT_HEADERS,
     lineHeight: 80 / 64,
-    fontSize: pxToRem(26),
-    ...responsiveFontSizes({ sm: 28, md: 32, lg: 34 }),
+    fontSize: pxToRem(36),
+    ...responsiveFontSizes({ sm: 28, md: 52, lg: 64 }),
   },
   h2: {
     color: grey[800],
-    textTransform: "uppercase",
+    // textTransform: "uppercase",
     fontFamily: FONT_HEADERS,
     lineHeight: 64 / 48,
-    fontSize: pxToRem(25),
-    ...responsiveFontSizes({ sm: 27, md: 31, lg: 33 }),
+    fontSize: pxToRem(30),
+    ...responsiveFontSizes({ sm: 37, md: 51, lg: 63 }),
   },
   h3: {
     color: grey[800],
-    textTransform: "uppercase",
-    fontFamily: FONT_HEADERS,
+    fontFamily: FONT_BOLD,
     lineHeight: 1.5,
     fontSize: pxToRem(24),
     ...responsiveFontSizes({ sm: 26, md: 30, lg: 32 }),
   },
   h4: {
-    fontFamily: FONT_HEADERS,
+    fontFamily: FONT_BOLD,
     lineHeight: 1.5,
     fontSize: pxToRem(20),
     ...responsiveFontSizes({ sm: 20, md: 24, lg: 24 }),
   },
   h5: {
-    fontFamily: FONT_HEADERS,
+    fontFamily: FONT_BOLD,
     lineHeight: 1.5,
     fontSize: pxToRem(18),
     ...responsiveFontSizes({ sm: 19, md: 20, lg: 20 }),
   },
   h6: {
     color: grey[800],
-    textTransform: "uppercase",
-    fontFamily: FONT_HEADERS,
+    fontFamily: FONT_BOLD,
     letterSpacing: "0.8px",
     lineHeight: 28 / 18,
     fontWeight: 500,
@@ -112,7 +111,7 @@ const typography = {
     fontWeight: 200,
     fontSize: pxToRem(16),
     textTransform: "capitalize",
-    fontFamily: FONT_HEADERS,
+    fontFamily: FONT_BOLD,
   },
 };
 
