@@ -1,11 +1,11 @@
 import {styled} from "@mui/material/styles";
 import Page from '../components/Page'
-import Product from "../components/products/Product";
-import { Container, Grid, Typography} from "@mui/material";
+import { Container, Typography} from "@mui/material";
 import DeyOffer from "../components/DayOffer";
 import HowWeWork from "../components/home/HowWeWork";
 import FeaturedCategories from "../components/home/FeaturedCategories";
 import MainBanner from "../components/home/MainBanner";
+import FeaturedGrid from "../components/home/FeaturedGrid";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -32,17 +32,9 @@ export default function Home() {
           marginLeft: '1rem',
           borderBottom: '4px solid #DB2E71'
         }}>Hot Sales</span></Typography>
-        <Grid container>
-          {
-            [...Array(10)].map((el, i) => (
-              <Grid item xs={12} sm={6} md={3} key={i + 12} sx={{display: 'flex', justifyContent: 'center'}}>
-                <Product/>
-              </Grid>
-            ))
-          }
-        </Grid>
+        <FeaturedGrid />
       </Container>
-      <DeyOffer eventTime='9999999999' interval='1000'/>
+      <DeyOffer />
       <HowWeWork/>
     </RootStyle>
   )
