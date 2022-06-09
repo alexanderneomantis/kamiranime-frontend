@@ -5,10 +5,11 @@ import moment from "moment";
 import {useCallback, useEffect, useRef, useState} from "react";
 import useGetPromotion from "../hooks/api/useGetPromotion";
 import {urlFor} from "../utils/image";
+import { useNavigate } from 'react-router-dom';
 
 export default function DeyOffer() {
   const {data, loading} = useGetPromotion()
-  console.log(data);
+  const navigate = useNavigate()
 
   // const eventTime = new Date(data.duration).getTime();
   const eventTime = new Date(data.duration).getTime() / 1000;
@@ -67,7 +68,7 @@ export default function DeyOffer() {
                   <Typography fontSize='3.5rem' fontWeight='bold' color='primary.dark'
                               align='center'>{duration.days()}</Typography>
                   <Typography variant='h1' color='primary.dark'
-                              align='center'>{duration.days > 1 ? 'Dias' : 'Dia'}</Typography>
+                              align='center'>Dias</Typography>
                 </Box>
                 <Box sx={{mx: 2}}>
                   <Typography fontSize='3.5rem' fontWeight='bold' color='primary.dark'
@@ -86,7 +87,7 @@ export default function DeyOffer() {
                 </Box>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center', mt: 5}}>
-                <Button variant='outlined'>Comprar ahora</Button>
+                <Button variant='outlined' onClick={() => navigate(`/${data.product.category}/${data.product.slug}`)}>Comprar ahora</Button>
               </Box>
             </Grid>
           </Grid>

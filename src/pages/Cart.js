@@ -1,7 +1,7 @@
 import {styled} from "@mui/material/styles";
 import Page from "../components/Page";
 import BreadCrumb from "../components/BreadCrumb";
-import {useState} from 'react';
+import {useState, useContext, useEffect} from 'react';
 import {
   Container, Select, Grid,
   Table,
@@ -13,12 +13,15 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box, TextField
+  Box, TextField,
 } from "@mui/material";
 import CartProduct from "../components/products/CartProduct";
 import {MHidden} from "../components/@material-extend";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import {Store} from "../context/StoreContext";
+import {addCommas, removeNonNumeric} from '../utils/format'
+import { regions, towns } from '../utils/staticData'
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -32,18 +35,28 @@ const RootStyle = styled(Page)(({theme}) => ({
   },
 }));
 
-const StyledCell = styled(TableCell)(({theme}) => ({
+const StyledCell = styled(TableCell)(() => ({
   backgroundColor: '#F8EDF6'
 }))
 
 
 export default function Cart() {
   const [checkoutValues, setCheckoutValues] = useState({
-    city: 0,
-    region: 0,
+    city: '',
+    region: '',
     code: '',
     coupon: '',
   })
+  const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    setTotal(cartItems.reduce((a, c) => a + c.quantity * c.price, 0))
+  }, [cartItems])
+
+  function getSubTotal() {
+    return cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+  }
 
   function handleChange(val, name) {
     setCheckoutValues(prevState => ({
@@ -52,12 +65,18 @@ export default function Cart() {
     }))
   }
 
-
+  function handleDeliveryExtra(operation, amount) {
+    if (operation) {
+      setTotal(prevState => prevState + amount)
+    } else {
+      setTotal(prevState => prevState - amount)
+    }
+  }
   return (
     <RootStyle title='Carrito de compras | Kamiranime'>
       <BreadCrumb/>
       <Container>
-        <Typography sx={{my: 5}} variant='h1' color='primary.dark'>Los productos de tu carro</Typography>
+        <Typography sx={{my: 5}} variant='h1' color='primary.dark'>Los productos de tu carrito</Typography>
 
         <MHidden width='mdDown'>
           <TableContainer>
@@ -73,57 +92,53 @@ export default function Cart() {
               </TableHead>
               <TableBody>
                 {
-                  [...Array(4)].map((item, i) => (
-                    <TableRow key={i + 1}>
-                      <CartProduct/>
+                  cartItems.length > 0 && cartItems.map((item, i) => (
+                    <TableRow key={item._key + i}>
+                      <CartProduct product={item}/>
                     </TableRow>
                   ))
                 }
               </TableBody>
             </Table>
           </TableContainer>
+          {cartItems.length < 1 && <Typography sx={{p: 5}}>No hay productos en el carrito...</Typography>}
         </MHidden>
 
         <MHidden width='mdUp'>
-          {
-            [...Array(4)].map((el, i) => (
-              <CartProduct key={i + 1}/>
-            ))
-          }
+          {cartItems.length > 0 && cartItems.map((el, i) =>  <CartProduct product={el} key={el._key + i}/>)}
+          {cartItems.length < 1 && <Typography sx={{p: 5}}>No hay productos en el carrito...</Typography>}
         </MHidden>
-        <Grid container spacing={2} sx={{ mt: 5}}>
-          <Grid item xs={12} md={4} >
+        <Grid container spacing={2} sx={{mt: 5}}>
+          <Grid item xs={12} md={4}>
             <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%'}}>
               <Typography variant='h4' sx={{mb: 2}}>Estimado de envío</Typography>
               <Typography variant='body1' sx={{mb: 2}}>Ingresa tu destino para tener un aproximado del envío
                 correspondiente.</Typography>
 
+              <Typography>Región</Typography>
+              <Select
+                labelId="region"
+                id="regionid"
+                size='small'
+                value={checkoutValues.region}
+                sx={{mb: 2, width: '100%', backgroundColor: '#fff'}}
+                onChange={e => handleChange(e.target.value, 'region')}
+              >
+                <MenuItem value={''}>Seleccionar Region</MenuItem>
+                {towns.map((town, i) =>  <MenuItem key={town + i} value={town}>{town}</MenuItem>)}
+              </Select>
+
               <Typography>Ciudad</Typography>
               <Select
                 labelId="city"
+                size='small'
                 id="cityid"
                 value={checkoutValues.city}
                 sx={{mb: 2, width: '100%', backgroundColor: '#fff'}}
                 onChange={e => handleChange(e.target.value, 'city')}
               >
-                <MenuItem value={0}>Seleccionar Ciudad</MenuItem>
-                <MenuItem value='ciudad 1'>ciudad 1</MenuItem>
-                <MenuItem value='ciudad 2'>ciudad 2</MenuItem>
-                <MenuItem value='ciudad 3'>ciudad 3</MenuItem>
-              </Select>
-
-              <Typography>Región</Typography>
-              <Select
-                labelId="region"
-                id="regionid"
-                value={checkoutValues.region}
-                sx={{mb: 2, width: '100%', backgroundColor: '#fff'}}
-                onChange={e => handleChange(e.target.value, 'region')}
-              >
-                <MenuItem value={0}>Seleccionar Region</MenuItem>
-                <MenuItem value='region 1'>region 1</MenuItem>
-                <MenuItem value='region 2'>region 2</MenuItem>
-                <MenuItem value='region 3'>region 3</MenuItem>
+                <MenuItem value={''}>Seleccionar Ciudad</MenuItem>
+                {regions.map((region, i) => <MenuItem key={region + i} value={region}>{region}</MenuItem>)}
               </Select>
 
               <Typography>Codigo postal</Typography>
@@ -139,7 +154,7 @@ export default function Cart() {
 
             </Box>
           </Grid>
-          <Grid item xs={12} md={4} >
+          <Grid item xs={12} md={4}>
             <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%'}}>
               <Typography variant='h4' sx={{mb: 2}}>Usar cupon de descuento</Typography>
               <Typography variant='body1' sx={{mb: 2}}>Si tienes algún cupón de descuento ingresado acá.</Typography>
@@ -157,25 +172,25 @@ export default function Cart() {
 
             </Box>
           </Grid>
-          <Grid item xs={12} md={4} >
+          <Grid item xs={12} md={4}>
             <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%'}}>
               <Typography variant='h4' sx={{mb: 2}}>Carrito</Typography>
-              <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant='body1' >total productos</Typography>
-                <Typography variant='h6' >$13.000</Typography>
+              <Box sx={{mb: 2, display: 'flex', justifyContent: 'space-between'}}>
+                <Typography variant='body1'>total productos</Typography>
+                <Typography variant='h6'>$ {addCommas(removeNonNumeric(getSubTotal()))}</Typography>
               </Box>
               <Box mb={5}>
                 <Typography>Total envió</Typography>
                 <Box display='flex' alignItems='center' justifyContent='space-between'>
                   <FormControlLabel
-                    control={<Checkbox/>}
+                    control={<Checkbox onChange={(e) => handleDeliveryExtra(e.target.checked, 2000)}/>}
                     label={<Typography variant="body1">Standar </Typography>}
                   />
                   <Typography> $2.000</Typography>
                 </Box>
                 <Box display='flex' alignItems='center' justifyContent='space-between'>
                   <FormControlLabel
-                    control={<Checkbox/>}
+                    control={<Checkbox onChange={(e) => handleDeliveryExtra(e.target.checked, 5000)}/>}
                     label={<Typography variant="body1">Express</Typography>}
                   />
                   <Typography> $5.000</Typography>
@@ -184,10 +199,10 @@ export default function Cart() {
 
               <Box display='flex' justifyContent='space-between' alignItems='center'>
                 <Typography variant='h4' color='primary'>Total carrito</Typography>
-                <Typography variant='h3' color='primary'>$18.000</Typography>
+                <Typography variant='h3' color='primary'>$ {addCommas(removeNonNumeric(total))}</Typography>
               </Box>
 
-              <Button variant='contained' sx={{ color: '#fff', width: '100%', mt: 3 }}>
+              <Button variant='contained' sx={{color: '#fff', width: '100%', mt: 3}}>
                 Comprar
               </Button>
 
