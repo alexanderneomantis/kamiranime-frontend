@@ -6,16 +6,22 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import {HelmetProvider} from "react-helmet-async";
 import {CollapseDrawerProvider} from "./context/CollapseDrawerContext";
+import {StoreProvider} from "./context/StoreContext";
+import {AlertProvider} from "./context/AlertContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-      <BrowserRouter>
-        <CollapseDrawerProvider>
-          <App/>
-        </CollapseDrawerProvider>
-      </BrowserRouter>
+      <StoreProvider>
+        <AlertProvider>
+          <BrowserRouter>
+            <CollapseDrawerProvider>
+              <App/>
+            </CollapseDrawerProvider>
+          </BrowserRouter>
+        </AlertProvider>
+      </StoreProvider>
     </HelmetProvider>
   </React.StrictMode>
 );

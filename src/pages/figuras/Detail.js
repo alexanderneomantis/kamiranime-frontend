@@ -13,14 +13,15 @@ import {
 } from "@mui/material";
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom'
 import useGetProductBySlug from '../../hooks/api/useGetProductBySlug'
-import {urlFor} from "../../utils/image";
+import {urlFor, urlForThumbnail} from "../../utils/image";
 import {addCommas, removeNonNumeric, capitalizeFirstLetter } from "../../utils/format";
 import {PortableText} from "@portabletext/react";
 import ProductComment from "../../components/products/ProductComment";
 import CommentForm from "../../components/products/CommentForm";
+import {Store} from '../../context/StoreContext'
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -36,16 +37,33 @@ const RootStyle = styled(Page)(({theme}) => ({
 
 export default function Detail() {
   const navigate = useNavigate();
+  const {state: {cart: {cartItems}}, dispatch} = useContext(Store);
   const {slug} = useParams()
   const {data, comments, reFetcher, loading} = useGetProductBySlug(slug);
   const [count, setCount] = useState(1);
   const [tabValue, setTabValue] = useState(1);
 
-  console.log(comments)
-
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  function addToCart(item) {
+    const existItem = cartItems.find(x => x._key === item._id)
+    const quantity = existItem ? existItem.quantity + count : count;
+
+    dispatch({
+      type: 'ADD_ITEM', payload: {
+        _key: item._id,
+        title: item.title,
+        slug: item.slug,
+        category: item.category,
+        price: item.price,
+        image: urlForThumbnail(item.images[0].asset),
+        quantity
+      }
+    })
+    navigate('/carrito');
+  }
 
   return (
     <RootStyle>
@@ -92,7 +110,7 @@ export default function Detail() {
                 <IconButton onClick={() => setCount(prevState => ++prevState)} color='primary'><AddIcon/></IconButton>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <Button variant='contained' sx={{color: '#fff'}} onClick={() => navigate('/carrito')}>Agregar al
+                <Button variant='contained' sx={{color: '#fff'}} onClick={() => addToCart(data[0])}>Agregar al
                   carrito</Button>
               </Box>
               <Box sx={{mt: 5}}>

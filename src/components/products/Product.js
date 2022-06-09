@@ -5,6 +5,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { urlForThumbnail } from '../../utils/image'
+import {useContext} from "react";
+import {Store} from "../../context/StoreContext";
 import { addCommas, removeNonNumeric } from '../../utils/format'
 
 const UpsideBox = styled(Box)({
@@ -22,9 +24,28 @@ const UpsideBox = styled(Box)({
 
 export default function Product({product = {}}) {
   const navigate = useNavigate()
+  const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
 
   function goToDetail() {
     navigate(`/${product.category}/${product.slug}`)
+  }
+
+  function addToCart(item) {
+    const existItem = cartItems.find(x => x._key === item._id)
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+
+    dispatch({
+      type: 'ADD_ITEM', payload: {
+        _key: item._id,
+        title: item.title,
+        slug: item.slug,
+        category: item.category,
+        price: item.price,
+        image: urlForThumbnail(item.images[0].asset),
+        quantity
+      }
+    })
+    navigate('/carrito');
   }
 
   return (
@@ -39,7 +60,7 @@ export default function Product({product = {}}) {
           backgroundColor: 'none',
           display: 'none',
         }}>
-            <IconButton color='primary'><ShoppingCartIcon /></IconButton>
+            <IconButton color='primary' onClick={() => addToCart(product)}><ShoppingCartIcon /></IconButton>
             <IconButton color='primary' onClick={() => goToDetail()}><VisibilityIcon /></IconButton>
         </Box>
         <Box
