@@ -9,7 +9,7 @@ import {Store} from '../../context/StoreContext'
 import { addCommas, removeNonNumeric } from '../../utils/format'
 
 export default function CartProduct({ product }) {
-  const {state, dispatch} = useContext(Store);
+  const {dispatch} = useContext(Store);
   const navigate = useNavigate()
   const [count, setCount] = useState(product.quantity)
 

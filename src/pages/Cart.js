@@ -47,7 +47,7 @@ export default function Cart() {
     code: '',
     coupon: '',
   })
-  const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
+  const {state: {cart: {cartItems}}} = useContext(Store)
   const [total, setTotal] = useState(0)
 
   useEffect(() => {
