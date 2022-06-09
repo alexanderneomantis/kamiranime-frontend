@@ -15,8 +15,8 @@ export default function HowWeWork() {
             src={deliveries}
           />
           <Box sx={{ position: 'absolute', zIndex: 11, top: '30%', left: '10%' }}>
-            <Typography variant='h3' color='primary.dark'> Entregas en metro L5</Typography>
-            <Typography>
+            <Typography variant='h4' color='primary.dark'> Entregas en metro L5</Typography>
+            <Typography variant='body1' fontSize='1.2rem'>
               De Santa Ana a Plaza Maipú
             </Typography>
           </Box>
@@ -28,8 +28,8 @@ export default function HowWeWork() {
             src={envios}
           />
           <Box sx={{ position: 'absolute', zIndex: 11, top: '30%', left: '10%' }}>
-            <Typography variant='h3' color='primary.dark'> Envíos Starken y Correos Chile</Typography>
-            <Typography>
+            <Typography variant='h4' color='primary.dark'> Envíos Starken y Correos Chile</Typography>
+            <Typography variant='body1' fontSize='1.2rem'>
               Solo los Viernes
             </Typography>
           </Box>
@@ -41,8 +41,8 @@ export default function HowWeWork() {
             src={despacho}
           />
           <Box sx={{ position: 'absolute', zIndex: 11, top: '30%', left: '10%' }}>
-            <Typography variant='h3' color='primary.dark'> Despacho a domicilio</Typography>
-            <Typography>
+            <Typography variant='h4' color='primary.dark'> Despacho a domicilio</Typography>
+            <Typography variant='body1' fontSize='1.2rem'>
               Martes y Viernes 24 hrs
             </Typography>
           </Box>

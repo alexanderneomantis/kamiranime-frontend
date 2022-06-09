@@ -11,12 +11,13 @@ import { addCommas, removeNonNumeric } from '../../utils/format'
 
 const UpsideBox = styled(Box)({
   position: 'relative',
+  backgroundColor: '#F8EDF6',
   ":hover": {
     "& .MuiBox-root" : {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(255, 255, 255, .5)',
+      backgroundColor: 'rgba(255, 255, 255, .3)',
       transition: 'all 200ms ease',
     }
   }

@@ -6,14 +6,14 @@ export default function FeaturedCategories() {
   const { data, loading } = useGetCategories()
 
   return (
-    <Grid container spacing={2} justifyContent='center' sx={{ my: 5 }}>
+    <Grid container spacing={2} justifyContent='center' sx={{ my: 5, pb: 5 }}>
       {loading && <p>Loading...</p>}
       {
         !loading && data && data.length > 0 && data.map(category => (
           <Grid item xs={12} sm={6} md={4} key={category._id}>
             <Box sx={{   display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: theme => theme.palette.secondary.main }}>
               <Box sx={{ pl: 5 }}>
-                <Typography variant='h3'>{category.title}</Typography>
+                <Typography variant='h5' color='primary.dark'>{category.title}</Typography>
                 <Typography>Desde ${category.promotionalPrice}</Typography>
               </Box>
                 <Box

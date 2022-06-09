@@ -1,7 +1,7 @@
 import {Link as RouterLink, useLocation} from "react-router-dom";
 // material
 import {styled} from "@mui/material/styles";
-import {AppBar, Box, IconButton, Toolbar} from "@mui/material";
+import {AppBar, Badge, Box, IconButton, Toolbar} from "@mui/material";
 // hooks
 import useOffSetTop from "../../hooks/useOffSetTop";
 // components
@@ -14,6 +14,8 @@ import search from '../../assets/icons/search.svg'
 import MenuDesktop from "./MenuDesktop";
 import MenuMobile from "./MenuMobile";
 import navConfig from "./menuConfig";
+import {useContext} from "react";
+import {Store} from "../../context/StoreContext";
 
 // ----------------------------------------------------------------------
 
@@ -44,11 +46,23 @@ const ToolbarShadowStyle = styled("div")(({theme}) => ({
   boxShadow: theme.customShadows.z8,
 }));
 
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 8,
+    top: 13,
+    color: '#fff',
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '6px',
+  },
+}));
+
 // ----------------------------------------------------------------------
 
 export default function Header() {
   const isOffset = useOffSetTop(1);
   const {pathname} = useLocation();
+  const {state: {cart: {cartItems}}} = useContext(Store)
   const isHome = pathname === "/";
 
   return (
@@ -95,9 +109,11 @@ export default function Header() {
             </RouterLink>
 
             <RouterLink to='/carrito'>
-              <IconButton aria-label="carrito de compras">
-                <img width={25} height={25} src={cart} alt="cart icon"/>
-              </IconButton>
+              <StyledBadge badgeContent={cartItems.length} color='primary'>
+                <IconButton aria-label="carrito de compras">
+                  <img width={25} height={25} src={cart} alt="cart icon"/>
+                </IconButton>
+              </StyledBadge>
             </RouterLink>
 
             <RouterLink to='/favoritos'>

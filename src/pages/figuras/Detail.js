@@ -72,18 +72,19 @@ export default function Detail() {
       {
         !loading && data && data.length > 0 &&
         <Container>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} sx={{ mt: 5 }}>
             <Grid item xs={12} md={6}>
               {
                 data[0].images && data[0].images.length > 0 &&
                 <Box
+                  sx={{ backgroundColor: '#F8EDF6' }}
                   component='img'
                   src={urlFor(data[0].images[0])}
                 />
               }
             </Grid>
             <Grid item xs={12} md={6} alignSelf='center'>
-              <Typography variant='h1' color='primary.dark'> {data[0].title}</Typography>
+              <Typography variant='h1' color='primary.dark' sx={{ my: 3 }}> {data[0].title}</Typography>
               <Box sx={{display: 'flex'}}>
                 <Typography variant='h3' color='primary' sx={{
                   mr: 5,
@@ -110,7 +111,7 @@ export default function Detail() {
                 <IconButton onClick={() => setCount(prevState => ++prevState)} color='primary'><AddIcon/></IconButton>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <Button variant='contained' sx={{color: '#fff'}} onClick={() => addToCart(data[0])}>Agregar al
+                <Button sx={{ backgroundColor: '#DB2E71', color: '#fff' }} onClick={() => addToCart(data[0])}>Agregar al
                   carrito</Button>
               </Box>
               <Box sx={{mt: 5}}>
@@ -118,7 +119,7 @@ export default function Detail() {
               </Box>
             </Grid>
           </Grid>
-          <Box sx={{width: '100%'}}>
+          <Box sx={{width: '100%', mt: 5}}>
             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
               <Tabs value={tabValue} onChange={handleChange} centered aria-label="basic tabs example">
                 <Tab label="Descripcion" {...a11yProps(0)} />
