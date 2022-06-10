@@ -11,4 +11,8 @@ function urlFor(source) {
   return builder.image(source).width(500).url();
 }
 
-export { urlFor, urlForThumbnail }
+function urlForBanner(source) {
+  return builder.image(source).url();
+}
+
+export { urlFor, urlForThumbnail, urlForBanner }
