@@ -1,7 +1,7 @@
 import {Link as RouterLink, useLocation} from "react-router-dom";
 // material
 import {styled} from "@mui/material/styles";
-import {AppBar, Badge, Box, IconButton, Toolbar} from "@mui/material";
+import {AppBar, Badge, Box, IconButton, Toolbar, Menu, MenuItem} from "@mui/material";
 // hooks
 import useOffSetTop from "../../hooks/useOffSetTop";
 // components
@@ -14,7 +14,7 @@ import search from '../../assets/icons/search.svg'
 import MenuDesktop from "./MenuDesktop";
 import MenuMobile from "./MenuMobile";
 import navConfig from "./menuConfig";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {Store} from "../../context/StoreContext";
 
 // ----------------------------------------------------------------------
@@ -47,10 +47,10 @@ const ToolbarShadowStyle = styled("div")(({theme}) => ({
 }));
 
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(({theme}) => ({
   '& .MuiBadge-badge': {
-    right: 8,
-    top: 13,
+    right: 6,
+    top: 10,
     color: '#fff',
     border: `2px solid ${theme.palette.background.paper}`,
     padding: '6px',
@@ -64,6 +64,15 @@ export default function Header() {
   const {pathname} = useLocation();
   const {state: {cart: {cartItems}}} = useContext(Store)
   const isHome = pathname === "/";
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar sx={{boxShadow: 0, bgcolor: "transparent"}}>
@@ -108,13 +117,38 @@ export default function Header() {
               </IconButton>
             </RouterLink>
 
-            <RouterLink to='/carrito'>
-              <StyledBadge badgeContent={cartItems.length} color='primary'>
-                <IconButton aria-label="carrito de compras">
-                  <img width={25} height={25} src={cart} alt="cart icon"/>
-                </IconButton>
-              </StyledBadge>
-            </RouterLink>
+            {/*<RouterLink to='/carrito'>*/}
+            <StyledBadge badgeContent={cartItems.length} color='primary'>
+              <IconButton
+                aria-label="carrito de compras"
+                aria-controls={open ? 'carrito-de-compras' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              >
+                <img width={25} height={25} src={cart} alt="cart icon"/>
+              </IconButton>
+            </StyledBadge>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <Box sx={{ width: 300, height: 300}}>
+                {
+                  cartItems.map(item => (
+                    <Box key={item._key}>
+                      {item.title}
+                    </Box>
+                  ))
+                }
+              </Box>
+            </Menu>
+            {/*</RouterLink>*/}
 
             <RouterLink to='/favoritos'>
               <IconButton aria-label="vista de favoritos">
