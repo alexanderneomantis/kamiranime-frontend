@@ -10,7 +10,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {useState} from "react";
 
 // ----------------------------------------------------------------------
 
@@ -46,8 +45,7 @@ const AccordionStyle = styled(Accordion)(() => ({
 
 // ----------------------------------------------------------------------
 
-export default function FiltersDesktop() {
-  const [range, setRange] = useState([0, 10000]);
+export default function FiltersDesktop({ range, setRange, filters, setFilters }) {
 
   const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "")
@@ -57,6 +55,10 @@ export default function FiltersDesktop() {
     setRange(newValue);
   };
 
+const handleCommited = (event, value) => {
+  console.log('event :', event);
+  console.log('value :', value);
+}
 
   function valuetext(value) {
     return `${value}°C`;
@@ -89,18 +91,18 @@ export default function FiltersDesktop() {
               label={<Typography variant="body1">En venta (10)</Typography>}
             />
             <FormControlLabel
-              control={<Checkbox/>}
+              control={<Checkbox checked={filters.isNew} onChange={e => setFilters(prevState => ({...prevState, isNew: e.target.checked}))}/>}
               label={<Typography variant="body1">Nuevo (20)</Typography>}
             />
             <FormControlLabel
-              control={<Checkbox/>}
+              control={<Checkbox checked={filters.isInStock} onChange={e => setFilters(prevState => ({...prevState, isInStock: e.target.checked}))}/>}
               label={<Typography variant="body1">En Stock (20)</Typography>}
             />
           </FormGroup>
         </AccordionDetails>
       </AccordionStyle>
 
-      <Box sx={{ p: 5 }}>
+      <Box sx={{p: 5}}>
         <Typography variant='h6'>Filtrar por precio</Typography>
         <Slider
           getAriaLabel={() => 'price slider'}
@@ -109,6 +111,7 @@ export default function FiltersDesktop() {
           max={10000}
           min={0}
           onChange={handleChange}
+          // onChangeCommitted={handleChange}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
         />

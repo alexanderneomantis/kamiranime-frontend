@@ -22,7 +22,7 @@ export default function useGetProductsByCategory(category) {
 }
 `
 
-  async function fetchData(category) {
+  async function fetchData(query) {
     try {
       setLoading(true)
       const response = await client.fetch(query, {category: category});
@@ -34,9 +34,5 @@ export default function useGetProductsByCategory(category) {
     }
   }
 
-  useEffect(() => {
-    fetchData(category)
-    // eslint-disable-next-line
-  }, [])
-  return {data, loading, error};
+  return {data, loading, error, search: (externalQuery) => fetchData(externalQuery)};
 }
