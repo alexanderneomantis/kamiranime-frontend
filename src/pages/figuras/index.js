@@ -26,15 +26,16 @@ const RootStyle = styled(Page)(({theme}) => ({
 
 export default function Figuras() {
   const [drawer, setDrawer] = useState(false);
-  const {data, loading, error, search} = useGetProductsByCategory('figuras');
-  const [range, setRange] = useState([0, 10000]);
+  const {data, loading, search} = useGetProductsByCategory('figuras');
+  const [range, setRange] = useState([0, 20000]);
   const [slice, setSlice] = useState([0, 12]);
   const [page, setPage] = useState(1)
 
   const [filters, setFilters] = useState({
     isNew: true,
     isInStock: true,
-    order: 'asc'
+    order: 'asc',
+    product: ''
   });
 
   const query = groq`
@@ -43,6 +44,7 @@ export default function Figuras() {
     && isNew == ${filters.isNew} 
     && isInStock == ${filters.isInStock}
     && price >= ${range[0]} 
+    && title match '*${filters.product}'
     && price <= ${range[1]} ] 
     | order(price ${filters.order})
     [${slice[0]}...${slice[1]}] {
@@ -74,7 +76,7 @@ export default function Figuras() {
       <Container>
         <Grid container>
           <Grid item xs={12} md={3}>
-            <FiltersDesktop setFilters={setFilters} filters={filters} range={range} setRange={setRange}/>
+            <FiltersDesktop category='figuras' setFilters={setFilters} filters={filters} range={range} setRange={setRange}/>
             <FiltersMobile setDrawer={setDrawer} drawer={drawer}/>
           </Grid>
           <Grid item xs={12} md={9} sx={{position: 'relative'}}>
@@ -88,7 +90,7 @@ export default function Figuras() {
                 <Grid container spacing={3}>
                   {
                     data.map((el) => (
-                      <Grid item xs={12} sm={6} md={3} key={el._id} sx={{display: 'flex', justifyContent: 'center'}}>
+                      <Grid item xs={12} sm={6} md={4} key={el._id} sx={{display: 'flex', justifyContent: 'center'}}>
                         <Product product={el}/>
                       </Grid>
                     ))

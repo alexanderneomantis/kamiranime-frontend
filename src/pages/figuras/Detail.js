@@ -22,6 +22,7 @@ import {PortableText} from "@portabletext/react";
 import ProductComment from "../../components/products/ProductComment";
 import CommentForm from "../../components/products/CommentForm";
 import {Store} from '../../context/StoreContext'
+// import CarouselBasic3 from "../../components/carousel/CarouselBasic3";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -74,22 +75,27 @@ export default function Detail() {
         <Container>
           <Grid container spacing={4} sx={{ mt: 5 }}>
             <Grid item xs={12} md={6}>
-              {
-                data[0].images && data[0].images.length > 0 &&
-                <Box
-                  sx={{ backgroundColor: '#F8EDF6' }}
+                {
+                  data[0].images && data[0].images.length > 0 &&
+                  // <CarouselBasic3 data={data[0].images} />
+                  <Box
+                  sx={{ backgroundColor: '#F8EDF6', width: '100%' }}
                   component='img'
                   src={urlFor(data[0].images[0])}
-                />
-              }
+                  />
+                }
+
             </Grid>
             <Grid item xs={12} md={6} alignSelf='center'>
               <Typography variant='h1' color='primary.dark' sx={{ my: 3 }}> {data[0].title}</Typography>
               <Box sx={{display: 'flex'}}>
-                <Typography variant='h3' color='primary' sx={{
-                  mr: 5,
-                  textDecoration: 'line-through '
-                }}> ${addCommas(removeNonNumeric(data[0].lastPrice))}</Typography>
+                {
+                  data[0].lastPrice &&
+                  <Typography variant='h3' color='primary' sx={{
+                    mr: 5,
+                    textDecoration: 'line-through '
+                  }}> ${addCommas(removeNonNumeric(data[0].lastPrice))}</Typography>
+                }
                 <Typography variant='h3'> ${addCommas(removeNonNumeric(data[0].price))}</Typography>
               </Box>
               <Typography variant='body1' sx={{my: 4}}>{data[0].shortDescription}</Typography>

@@ -1,6 +1,6 @@
 // material
 import {grey} from "@mui/material/colors";
-import {Slider, styled, TextField} from "@mui/material";
+import {Slider, styled, TextField, IconButton} from "@mui/material";
 import {Box, Typography} from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -9,12 +9,17 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
+import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {useState, useEffect} from "react";
+import useGetProductsByCategory from "../../hooks/api/useGetProductsByCategory";
+import groq from "groq";
 
 // ----------------------------------------------------------------------
 
 const BoxStyle = styled(Box)(() => ({
   padding: "14px 16px 8px 16px",
+  display: 'flex'
 }));
 
 const AccordionStyle = styled(Accordion)(() => ({
@@ -45,20 +50,27 @@ const AccordionStyle = styled(Accordion)(() => ({
 
 // ----------------------------------------------------------------------
 
-export default function FiltersDesktop({ range, setRange, filters, setFilters }) {
+export default function FiltersDesktop({ category, range, setRange, filters, setFilters }) {
+  const {data, loading, search} = useGetProductsByCategory(category);
+  const [ product, setProduct ] = useState('')
 
   const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "")
+
+  const query = groq`*[_type == 'product' && category->title ==  $category]`
+
+  console.log('data', data);
+  console.log('loading', loading);
+
+
+  useEffect(() => {
+    search(query)
+  }, [])
 
 
   const handleChange = (event, newValue) => {
     setRange(newValue);
   };
-
-const handleCommited = (event, value) => {
-  console.log('event :', event);
-  console.log('value :', value);
-}
 
   function valuetext(value) {
     return `${value}°C`;
@@ -72,8 +84,13 @@ const handleCommited = (event, value) => {
           label="Buscar…"
           variant="outlined"
           size="small"
+          value={product}
+          onChange={(e) => setProduct(e.target.value)}
           fullWidth
         />
+        <IconButton onClick={() => setFilters(prevState => ({...prevState, product: product}))}>
+          <SearchIcon style={{ color: '#DB2E71' }} />
+        </IconButton>
       </BoxStyle>
 
       <AccordionStyle defaultExpanded>
@@ -92,11 +109,11 @@ const handleCommited = (event, value) => {
             />
             <FormControlLabel
               control={<Checkbox checked={filters.isNew} onChange={e => setFilters(prevState => ({...prevState, isNew: e.target.checked}))}/>}
-              label={<Typography variant="body1">Nuevo (20)</Typography>}
+              label={<Typography variant="body1">Nuevo ({data && data.length > 0 && data.filter(x => x.isNew).length})</Typography>}
             />
             <FormControlLabel
               control={<Checkbox checked={filters.isInStock} onChange={e => setFilters(prevState => ({...prevState, isInStock: e.target.checked}))}/>}
-              label={<Typography variant="body1">En Stock (20)</Typography>}
+              label={<Typography variant="body1">En Stock ({data && data.length > 0 && data.filter(x => x.isInStock).length})</Typography>}
             />
           </FormGroup>
         </AccordionDetails>
@@ -108,16 +125,15 @@ const handleCommited = (event, value) => {
           getAriaLabel={() => 'price slider'}
           value={range}
           size='large'
-          max={10000}
+          max={20000}
           min={0}
           onChange={handleChange}
-          // onChangeCommitted={handleChange}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
         />
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-          <small>{addCommas(removeNonNumeric(range[0]))} $</small>
-          <small>{addCommas(removeNonNumeric(range[1]))} $</small>
+          <small>$ {addCommas(removeNonNumeric(range[0]))}</small>
+          <small>$ {addCommas(removeNonNumeric(range[1]))}</small>
         </Box>
       </Box>
 

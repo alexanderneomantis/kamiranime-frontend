@@ -108,7 +108,7 @@ export default function Cart() {
           {cartItems.length > 0 && cartItems.map((el, i) =>  <CartProduct product={el} key={el._key + i}/>)}
           {cartItems.length < 1 && <Typography sx={{p: 5}}>No hay productos en el carrito...</Typography>}
         </MHidden>
-        <Grid container spacing={2} sx={{mt: 5}}>
+        <Grid container spacing={2} sx={{my: 5}}>
           <Grid item xs={12} md={4}>
             <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%'}}>
               <Typography variant='h4' sx={{mb: 2}}>Estimado de envío</Typography>

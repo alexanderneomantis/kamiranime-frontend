@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useState, useEffect} from 'react';
-import groq from 'groq';
+import {useState} from 'react';
 import {client} from '../../utils/client'
 
 
@@ -9,18 +8,6 @@ export default function useGetProductsByCategory(category) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const query = groq`
-  *[_type == 'product' && category->title ==  $category ] {
-  title,
-  "slug": slug.current,
-  price,
-  lastPrice,
-  images,
-  isNew,
-  isFeatured,
-  "category": category->title,
-}
-`
 
   async function fetchData(query) {
     try {

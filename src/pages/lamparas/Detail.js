@@ -13,14 +13,16 @@ import {
 } from "@mui/material";
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom'
 import useGetProductBySlug from '../../hooks/api/useGetProductBySlug'
-import {urlFor} from "../../utils/image";
+import {urlFor, urlForThumbnail} from "../../utils/image";
 import {addCommas, removeNonNumeric, capitalizeFirstLetter } from "../../utils/format";
 import {PortableText} from "@portabletext/react";
 import ProductComment from "../../components/products/ProductComment";
 import CommentForm from "../../components/products/CommentForm";
+import {Store} from '../../context/StoreContext'
+// import CarouselBasic3 from "../../components/carousel/CarouselBasic3";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -36,16 +38,33 @@ const RootStyle = styled(Page)(({theme}) => ({
 
 export default function Detail() {
   const navigate = useNavigate();
+  const {state: {cart: {cartItems}}, dispatch} = useContext(Store);
   const {slug} = useParams()
   const {data, comments, reFetcher, loading} = useGetProductBySlug(slug);
   const [count, setCount] = useState(1);
   const [tabValue, setTabValue] = useState(1);
 
-  console.log(comments)
-
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
+
+  function addToCart(item) {
+    const existItem = cartItems.find(x => x._key === item._id)
+    const quantity = existItem ? existItem.quantity + count : count;
+
+    dispatch({
+      type: 'ADD_ITEM', payload: {
+        _key: item._id,
+        title: item.title,
+        slug: item.slug,
+        category: item.category,
+        price: item.price,
+        image: urlForThumbnail(item.images[0].asset),
+        quantity
+      }
+    })
+    navigate('/carrito');
+  }
 
   return (
     <RootStyle>
@@ -54,23 +73,29 @@ export default function Detail() {
       {
         !loading && data && data.length > 0 &&
         <Container>
-          <Grid container spacing={4}>
+          <Grid container spacing={4} sx={{ mt: 5 }}>
             <Grid item xs={12} md={6}>
               {
                 data[0].images && data[0].images.length > 0 &&
+                // <CarouselBasic3 data={data[0].images} />
                 <Box
+                  sx={{ backgroundColor: '#F8EDF6', width: '100%' }}
                   component='img'
                   src={urlFor(data[0].images[0])}
                 />
               }
+
             </Grid>
             <Grid item xs={12} md={6} alignSelf='center'>
-              <Typography variant='h1' color='primary.dark'> {data[0].title}</Typography>
+              <Typography variant='h1' color='primary.dark' sx={{ my: 3 }}> {data[0].title}</Typography>
               <Box sx={{display: 'flex'}}>
-                <Typography variant='h3' color='primary' sx={{
-                  mr: 5,
-                  textDecoration: 'line-through '
-                }}> ${addCommas(removeNonNumeric(data[0].lastPrice))}</Typography>
+                {
+                  data[0].lastPrice &&
+                  <Typography variant='h3' color='primary' sx={{
+                    mr: 5,
+                    textDecoration: 'line-through '
+                  }}> ${addCommas(removeNonNumeric(data[0].lastPrice))}</Typography>
+                }
                 <Typography variant='h3'> ${addCommas(removeNonNumeric(data[0].price))}</Typography>
               </Box>
               <Typography variant='body1' sx={{my: 4}}>{data[0].shortDescription}</Typography>
@@ -92,7 +117,7 @@ export default function Detail() {
                 <IconButton onClick={() => setCount(prevState => ++prevState)} color='primary'><AddIcon/></IconButton>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <Button variant='contained' sx={{color: '#fff'}} onClick={() => navigate('/carrito')}>Agregar al
+                <Button sx={{ backgroundColor: '#DB2E71', color: '#fff' }} onClick={() => addToCart(data[0])}>Agregar al
                   carrito</Button>
               </Box>
               <Box sx={{mt: 5}}>
@@ -100,7 +125,7 @@ export default function Detail() {
               </Box>
             </Grid>
           </Grid>
-          <Box sx={{width: '100%'}}>
+          <Box sx={{width: '100%', mt: 5}}>
             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
               <Tabs value={tabValue} onChange={handleChange} centered aria-label="basic tabs example">
                 <Tab label="Descripcion" {...a11yProps(0)} />

@@ -1,16 +1,10 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { useFormik, Form, FormikProvider } from "formik";
 import { FocusError } from 'focus-formik-error'
-import useSendComment from "../../hooks/api/useSendComment";
 import {CommentSchema} from "../../utils/formSchemas";
-import {useState} from "react";
 
-export default function CommentForm({ product, reload }) {
-  const {send} = useSendComment(() => reload())
+export default function ContactForm() {
   const formSavedData = JSON.parse(localStorage.getItem('formFields'))
-  const [isChecked, setChecked] = useState(!!formSavedData)
 
   const formik = useFormik({
     initialValues: {
@@ -22,7 +16,7 @@ export default function CommentForm({ product, reload }) {
     onSubmit: async (values, { setSubmitting, resetForm}) => {
       try {
         setSubmitting(true);
-        await send({...values, product: product});
+        await console.log(values);
         resetForm();
         setSubmitting(false);
       } catch (error) {
@@ -34,16 +28,6 @@ export default function CommentForm({ product, reload }) {
 
   const { errors, touched, isValid, isSubmitting, handleSubmit, getFieldProps } = formik;
 
-  function handleSaveName(e) {
-    console.log(e.target.checked, formik.values.name, formik.values.email)
-    if (e.target.checked) {
-      setChecked(true)
-      localStorage.setItem('formFields', JSON.stringify({name: formik.values.name, email: formik.values.email}))
-    } else {
-      setChecked(false)
-      localStorage.removeItem('formFields')
-    }
-  }
 
 
   return (
@@ -51,21 +35,6 @@ export default function CommentForm({ product, reload }) {
       <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
         <FocusError formik={formik} />
         <Box>
-          <Typography sx={{mt: 3, mb: 2}}>Tu Review*</Typography>
-          <TextField
-            multiline
-            minRows={7}
-            {...getFieldProps("comment")}
-            error={Boolean(touched.comment && errors.comment)}
-            helperText={touched.comment && errors.comment}
-            placeholder="Escribir texto aqui..."
-            style={{
-              width: '100%',
-              borderColor: 'lightgray',
-              borderRadius: '15px',
-              padding: '1rem',
-            }}
-          />
 
           <Typography sx={{mt: 3, mb: 2}}>Tu nombre *</Typography>
           <TextField
@@ -89,18 +58,30 @@ export default function CommentForm({ product, reload }) {
             sx={{width: '100%'}}
           />
 
-          <FormControlLabel
-            sx={{my: 5}}
-            control={<Checkbox disabled={!formik.values.name || !formik.values.email} checked={isChecked} onChange={handleSaveName} />}
-            label={<Typography variant="body1">Guarda mi nombre y página en este buscador para la próxima vez que
-              comente.</Typography>}
+          <Typography sx={{mt: 3, mb: 2}}>Tu Mensaje *</Typography>
+          <TextField
+            multiline
+            minRows={7}
+            {...getFieldProps("comment")}
+            error={Boolean(touched.comment && errors.comment)}
+            helperText={touched.comment && errors.comment}
+            placeholder="Escribir texto aqui..."
+            style={{
+              width: '100%',
+              borderColor: 'lightgray',
+              borderRadius: '15px',
+              padding: '1rem',
+            }}
           />
 
+
         </Box>
-        <Button sx={{ backgroundColor: '#DB2E71', color: '#fff' }} type='submit' disabled={isSubmitting || !isValid}>
-          {isSubmitting && 'Enviando...'}
-          {!isSubmitting && 'Enviar'}
-        </Button>
+        <Box display='flex' justifyContent='center' mt={2}>
+          <Button sx={{ backgroundColor: '#DB2E71', color: '#fff' }} type='submit' disabled={isSubmitting || !isValid}>
+            {isSubmitting && 'Enviando...'}
+            {!isSubmitting && 'Enviar'}
+          </Button>
+        </Box>
       </Form>
     </FormikProvider>
   )
