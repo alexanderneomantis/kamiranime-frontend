@@ -3,33 +3,29 @@ import groq from "groq";
 import {client} from "../../utils/client";
 
 const query = groq`
-  *[_type == 'promotion'] {
-  duration,
-  isVisible,
-  "product": product->{
-    _id,
-    title,
-    images,
-    'slug': slug.current,
-    "category": category->title,
-    lastPrice,
-    price
-  }
+*[_type == 'banner' && active == true] {
+  title,
+  subtitle,
+  buttonText,
+  url,
+  image
 }
 `
 
-export default function useGetPromotion() {
-  const [data, setData] = useState({});
+export default function useGetBanner() {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   async function fetchData() {
     try {
       setLoading(true)
-      const response = await client.fetch(query);
-      setData(response[0]);
+      const response = await client.fetch(query)
+      console.log(response);
+      setData(response[0])
       setLoading(false)
-    } catch (err) {
+
+    } catch(err) {
       setError(err)
       setLoading(false)
     }
@@ -37,7 +33,6 @@ export default function useGetPromotion() {
 
   useEffect(() => {
     fetchData()
-    // eslint-disable-next-line
   }, [])
   return {data, loading, error};
 }

@@ -24,6 +24,7 @@ const UpsideBox = styled(Box)({
 })
 
 export default function Product({product = {}}) {
+  console.log(product);
   const navigate = useNavigate()
   const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
 
@@ -68,6 +69,8 @@ export default function Product({product = {}}) {
           component="img"
           src={urlForThumbnail(product.images[0].asset)}
           alt="Paella dish"
+          height='296px'
+          width='276px'
         />
       </UpsideBox>
       <Box sx={{ p: 3 }}>
@@ -78,8 +81,11 @@ export default function Product({product = {}}) {
           </IconButton>
         </Box>
         <Box sx={{display: 'flex'}}>
-          <Typography variant='body1' sx={{ textDecoration: 'line-through' }} fontWeight='bold' color='primary.main'>${addCommas(removeNonNumeric(product.lastPrice))}</Typography>
-          <Typography sx={{mx: 2}} fontWeight='bold' variant='body1'>${addCommas(removeNonNumeric(product.price))}</Typography>
+          {
+            product.lastPrice &&
+            <Typography variant='body1' sx={{ textDecoration: 'line-through', mr: 2 }} fontWeight='bold' color='primary.main'>${addCommas(removeNonNumeric(product.lastPrice))}</Typography>
+          }
+          <Typography fontWeight='bold' variant='body1'>${addCommas(removeNonNumeric(product.price))}</Typography>
         </Box>
       </Box>
     </Paper>

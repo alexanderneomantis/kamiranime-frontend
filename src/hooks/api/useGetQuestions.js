@@ -2,23 +2,9 @@ import {useState, useEffect} from 'react';
 import groq from "groq";
 import {client} from "../../utils/client";
 
-const query = groq`
-  *[_type == 'promotion'] {
-  duration,
-  isVisible,
-  "product": product->{
-    _id,
-    title,
-    images,
-    'slug': slug.current,
-    "category": category->title,
-    lastPrice,
-    price
-  }
-}
-`
+const query = groq`*[_type == 'questions'] { _id, section, questions }`
 
-export default function useGetPromotion() {
+export default function useGetQuestions() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +13,8 @@ export default function useGetPromotion() {
     try {
       setLoading(true)
       const response = await client.fetch(query);
-      setData(response[0]);
+      console.log(response);
+      setData(response);
       setLoading(false)
     } catch (err) {
       setError(err)

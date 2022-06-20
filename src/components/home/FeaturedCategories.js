@@ -1,8 +1,10 @@
 import {Box, Grid, Typography} from "@mui/material";
 import useGetCategories from "../../hooks/api/useGetCategories";
 import {urlFor} from "../../utils/image";
+import { useNavigate } from 'react-router-dom'
 
 export default function FeaturedCategories() {
+  const navigate = useNavigate();
   const { data, loading } = useGetCategories()
 
   return (
@@ -10,7 +12,7 @@ export default function FeaturedCategories() {
       {loading && <p>Loading...</p>}
       {
         !loading && data && data.length > 0 && data.map(category => (
-          <Grid item xs={12} sm={6} md={4} key={category._id}>
+          <Grid item xs={12} sm={6} md={4} key={category._id} sx={{ cursor: 'pointer' }} onClick={() => navigate(`/${category.title}`)}>
             <Box sx={{   display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: theme => theme.palette.secondary.main }}>
               <Box sx={{ pl: 5 }}>
                 <Typography variant='h5' color='primary.dark'>{category.title}</Typography>

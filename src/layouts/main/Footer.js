@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Container, Grid, Typography, List, ListItem } from "@mui/material";
 //
 import Logo from "../../assets/km-vertical-logo.svg";
-
+import { useNavigate } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled("div")(({ theme }) => ({
@@ -17,8 +17,22 @@ const RootStyle = styled("div")(({ theme }) => ({
   },
 }));
 
+const Link = styled(Typography)({
+  "&:hover": {
+    transition: 'color 200ms ease ',
+    color: 'pink',
+    cursor: 'pointer'
+  }
+})
+
 
 export default function Footer() {
+  const navigate = useNavigate();
+
+  function openUrl(url) {
+    window.open(url, '_blank', '')
+  }
+
   return (
     <RootStyle>
       <Container maxWidth="lg" sx={{ py: 10 }}>
@@ -45,8 +59,8 @@ export default function Footer() {
             <ListItem>
               <Typography variant='h4'  color='primary.dark'>Sobre nosotros</Typography>
             </ListItem>
-            <ListItem><Typography variant='body1'>Contactanos</Typography></ListItem>
-            <ListItem><Typography variant='body1'>Kamiranime</Typography></ListItem>
+            <ListItem><Link onClick={() => navigate('/contactanos')}>Contactanos</Link></ListItem>
+            <ListItem><Link onClick={() => navigate('')}>Kamiranime</Link></ListItem>
           </List>
           </Grid>
           <Grid
@@ -59,7 +73,7 @@ export default function Footer() {
               <ListItem>
                 <Typography variant='h4'  color='primary.dark'>Ayuda</Typography>
               </ListItem>
-              <ListItem><Typography variant='body1'>Preguntas frecuentes</Typography></ListItem>
+              <ListItem><Link onClick={() => navigate('/preguntas-frecuentes')}>Preguntas frecuentes</Link></ListItem>
             </List>
           </Grid>
           <Grid
@@ -72,9 +86,9 @@ export default function Footer() {
               <ListItem>
                 <Typography variant='h4'  color='primary.dark'>Siguenos</Typography>
               </ListItem>
-              <ListItem><Typography variant='body1'>Tiktok</Typography></ListItem>
-              <ListItem><Typography variant='body1'>Instagram</Typography></ListItem>
-              <ListItem><Typography variant='body1'>Facebook</Typography></ListItem>
+              <ListItem><Link onClick={() => openUrl('https://tiktok.com')}>Tiktok</Link></ListItem>
+              <ListItem><Link onClick={() => openUrl('https://instagram.com')}>Instagram</Link></ListItem>
+              <ListItem><Link onClick={() => openUrl('https://facebook.com')}>Facebook</Link></ListItem>
             </List>
           </Grid>
 

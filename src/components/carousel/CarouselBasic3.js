@@ -4,29 +4,23 @@ import { useRef } from "react";
 // material
 import { useTheme, styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
-// utils
-import mockData from "../../utils/mock-data";
 //
 import {
   CarouselControlsPaging2,
   CarouselControlsArrowsBasic2,
 } from "./controls";
+import {urlFor} from "../../utils/image";
 
 // ----------------------------------------------------------------------
 
-const MOCK_CAROUSELS = [...Array(4)].map((_, index) => ({
-  id: mockData.id(index),
-  title: mockData.text.title(index),
-  image: mockData.image.feed(index),
-  description: mockData.text.description(index),
-}));
 
-const RootStyle = styled("div")(({ theme }) => ({
+const RootStyle = styled("div")({
   position: "relative",
+  zIndex: -1,
   "& .slick-track": {
     display: "inline-flex",
   },
-}));
+});
 
 // ----------------------------------------------------------------------
 
@@ -35,19 +29,20 @@ CarouselItem.propTypes = {
 };
 
 function CarouselItem({ item }) {
-  const { image, title } = item;
+  console.log(item);
 
   return (
     <Box
-      component="img"
-      alt={title}
-      src={image}
-      sx={{ width: "100%", height: 480, objectFit: "cover" }}
+      sx={{ backgroundColor: '#F8EDF6', width: '100%' }}
+      component='img'
+      alt={item.alt}
+      src={urlFor(item)}
     />
   );
 }
 
-export default function CarouselBasic3() {
+export default function CarouselBasic3({data}) {
+  console.log(data);
   const theme = useTheme();
   const carouselRef = useRef();
 
@@ -74,8 +69,8 @@ export default function CarouselBasic3() {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
-        {MOCK_CAROUSELS.map((item) => (
-          <CarouselItem key={item.title} item={item} />
+        {data.map((item) => (
+          <CarouselItem key={item._key} item={item} />
         ))}
       </Slider>
       <CarouselControlsArrowsBasic2

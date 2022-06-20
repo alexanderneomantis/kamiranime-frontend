@@ -1,7 +1,7 @@
 import {Link as RouterLink, useLocation} from "react-router-dom";
 // material
 import {styled} from "@mui/material/styles";
-import {AppBar, Badge, Box, IconButton, Toolbar} from "@mui/material";
+import {AppBar, Badge, Box, IconButton, Toolbar, Menu, Button, Typography} from "@mui/material";
 // hooks
 import useOffSetTop from "../../hooks/useOffSetTop";
 // components
@@ -14,8 +14,11 @@ import search from '../../assets/icons/search.svg'
 import MenuDesktop from "./MenuDesktop";
 import MenuMobile from "./MenuMobile";
 import navConfig from "./menuConfig";
-import {useContext} from "react";
+import {useContext, useState, useEffect} from "react";
 import {Store} from "../../context/StoreContext";
+import {useNavigate} from 'react-router-dom';
+import {addCommas, removeNonNumeric} from "../../utils/format";
+import CloseIcon from '@mui/icons-material/Close';
 
 // ----------------------------------------------------------------------
 
@@ -47,10 +50,10 @@ const ToolbarShadowStyle = styled("div")(({theme}) => ({
 }));
 
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(({theme}) => ({
   '& .MuiBadge-badge': {
-    right: 8,
-    top: 13,
+    right: 6,
+    top: 10,
     color: '#fff',
     border: `2px solid ${theme.palette.background.paper}`,
     padding: '6px',
@@ -62,8 +65,33 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 export default function Header() {
   const isOffset = useOffSetTop(1);
   const {pathname} = useLocation();
-  const {state: {cart: {cartItems}}} = useContext(Store)
+  const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
   const isHome = pathname === "/";
+  const navigate = useNavigate();
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    setTotal(cartItems.reduce((a, c) => a + c.quantity * c.price, 0))
+  }, [cartItems])
+
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const goToCart = () => {
+    setAnchorEl(null);
+    navigate('/carrito');
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  function removeItemHandler(item) {
+    dispatch({type: 'REMOVE_ITEM', payload: item})
+  }
 
   return (
     <AppBar sx={{boxShadow: 0, bgcolor: "transparent"}}>
@@ -108,13 +136,53 @@ export default function Header() {
               </IconButton>
             </RouterLink>
 
-            <RouterLink to='/carrito'>
-              <StyledBadge badgeContent={cartItems.length} color='primary'>
-                <IconButton aria-label="carrito de compras">
-                  <img width={25} height={25} src={cart} alt="cart icon"/>
-                </IconButton>
-              </StyledBadge>
-            </RouterLink>
+            {/*<RouterLink to='/carrito'>*/}
+            <StyledBadge badgeContent={cartItems.length} color='primary'>
+              <IconButton
+                aria-label="carrito de compras"
+                aria-controls={open ? 'carrito-de-compras' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              >
+                <img width={25} height={25} src={cart} alt="cart icon"/>
+              </IconButton>
+            </StyledBadge>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <Box sx={{width: 350, height: 400}} display='flex' flexDirection='column' justifyContent='space-between'>
+                {
+                  cartItems && cartItems.length > 0 && cartItems.map(item => (
+                    <FloatCartItem item={item} remove={removeItemHandler} key={item._key}/>
+                  ))
+                }
+                {
+                  cartItems.length < 1 &&
+                  <Box display='flex' justifyContent='center' my={5}>
+                    <Typography>No hay productos en el carrito...</Typography>
+                  </Box>
+                }
+
+                <Box py={3}>
+                  <Box display='flex' justifyContent='space-between' px={5} py={2}>
+                    <Typography>Comprando:</Typography>
+                    <Typography>$ {addCommas(removeNonNumeric(total))}</Typography>
+                  </Box>
+                  <Box display='flex' justifyContent='center' >
+                    <Button sx={{backgroundColor: '#DB2E71', color: '#fff'}} onClick={() => goToCart()}>Ir al
+                      carrito</Button>
+                  </Box>
+                </Box>
+              </Box>
+            </Menu>
+            {/*</RouterLink>*/}
 
             <RouterLink to='/favoritos'>
               <IconButton aria-label="vista de favoritos">
@@ -136,4 +204,29 @@ export default function Header() {
       {isOffset && <ToolbarShadowStyle/>}
     </AppBar>
   );
+}
+
+function FloatCartItem({item, remove}) {
+  const navigate = useNavigate();
+  return (
+    <Box display='flex' justifyContent='space-between' pb={1} mb={2} mt={1} sx={{borderBottom: '1px solid lightgray'}}>
+      <Box display='flex'>
+        <Box
+          component='img'
+          src={item.image}
+          sx={{width: 80, mr: 2}}
+        />
+        <Box>
+          <Typography sx={{ "&:hover": {cursor: 'pointer', color: 'gray'} }} onClick={() => navigate(`/${item.category}/${item.slug}`)} color='#DB2E71' fontWeight='bold'>{item.title}</Typography>
+          <Typography color='gray'>x {item.quantity}</Typography>
+          <Typography color='gray'>$ {addCommas(removeNonNumeric(item.price))}</Typography>
+        </Box>
+      </Box>
+      <Box mx={2}>
+        <IconButton onClick={() => remove(item)}>
+          <CloseIcon style={{color: '#683A83'}}/>
+        </IconButton>
+      </Box>
+    </Box>
+  )
 }

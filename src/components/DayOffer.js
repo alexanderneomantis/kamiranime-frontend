@@ -33,7 +33,7 @@ export default function DeyOffer() {
     <Box>
       {loading && <p>Loading...</p>}
       {
-        !loading && data &&
+        !loading && data && data.isVisible &&
         <Box
           sx={{
             p: 5,
