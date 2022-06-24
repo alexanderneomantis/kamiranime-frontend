@@ -12,7 +12,7 @@ const query = groq`
   price,
   title,
   "slug": slug.current
-} 
+} | [0...16]
 `
 
 export default function useGetFeatured() {

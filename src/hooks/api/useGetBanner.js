@@ -5,6 +5,7 @@ import {client} from "../../utils/client";
 const query = groq`
 *[_type == 'banner' && active == true] {
   title,
+  _id,
   subtitle,
   buttonText,
   url,
@@ -22,7 +23,7 @@ export default function useGetBanner() {
       setLoading(true)
       const response = await client.fetch(query)
       console.log(response);
-      setData(response[0])
+      setData(response)
       setLoading(false)
 
     } catch(err) {

@@ -12,6 +12,7 @@ const APP_BAR_DESKTOP = 88;
 
 const RootStyle = styled(Page)(({theme}) => ({
   minHeight: "100%",
+  overflowX: 'hidden',
   width: "100%",
   paddingTop: APP_BAR_MOBILE,
   [theme.breakpoints.up("md")]: {

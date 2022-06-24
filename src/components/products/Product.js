@@ -24,12 +24,11 @@ const UpsideBox = styled(Box)({
 })
 
 export default function Product({product = {}}) {
-  console.log(product);
   const navigate = useNavigate()
   const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
 
   function goToDetail() {
-    navigate(`/${product.category}/${product.slug}`)
+    navigate(`/categorias/${product.category}/${product.slug}`)
   }
 
   function addToCart(item) {
@@ -70,7 +69,7 @@ export default function Product({product = {}}) {
           src={urlForThumbnail(product.images[0].asset)}
           alt="Paella dish"
           height='296px'
-          width='276px'
+          width='296px'
         />
       </UpsideBox>
       <Box sx={{ p: 3 }}>

@@ -15,27 +15,27 @@ const menuConfig = [
   {
     title: "Figuras",
     icon: <Icon icon={homeFill} {...ICON_SIZE} />,
-    path: "/figuras",
+    path: "/categorias/figuras",
   },
   {
     title: "Peluches",
     icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
-    path: "/peluches",
+    path: "/categorias/peluches",
   },
   {
     title: "Accesorios",
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
-    path: "/accesorios",
+    path: "/categorias/accesorios",
   },
   {
     title: "Acrilicos",
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: "/acrilicos",
+    path: "/categorias/acrilicos",
   },
   {
     title: "Lamparas",
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: "/lamparas",
+    path: "/categorias/lamparas",
   },
 ];
 

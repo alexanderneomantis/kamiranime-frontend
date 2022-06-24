@@ -2,6 +2,7 @@ import {Box, Grid, Typography} from "@mui/material";
 import useGetCategories from "../../hooks/api/useGetCategories";
 import {urlFor} from "../../utils/image";
 import { useNavigate } from 'react-router-dom'
+import {addCommas, removeNonNumeric} from "../../utils/format";
 
 export default function FeaturedCategories() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function FeaturedCategories() {
             <Box sx={{   display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: theme => theme.palette.secondary.main }}>
               <Box sx={{ pl: 5 }}>
                 <Typography variant='h5' color='primary.dark'>{category.title}</Typography>
-                <Typography>Desde ${category.promotionalPrice}</Typography>
+                <Typography>Desde ${addCommas(removeNonNumeric(category.promotionalPrice))}</Typography>
               </Box>
                 <Box
                   component='img'

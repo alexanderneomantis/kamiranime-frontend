@@ -116,7 +116,12 @@ export default function Header() {
         >
           <RouterLink to="/">
             {/*<Logo/>*/}
-            <img src={Logo} width={200} alt="kamiranime logo"/>
+            <MHidden width='mdDown'>
+              <img src={Logo} width={200} alt="kamiranime logo"/>
+            </MHidden>
+            <MHidden width='mdUp'>
+              <img src={Logo} width={133} alt="kamiranime logo"/>
+            </MHidden>
           </RouterLink>
 
           {/*<Box sx={{flexGrow: 1}}/>*/}

@@ -93,6 +93,10 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
         </IconButton>
       </BoxStyle>
 
+      <Box p={2}>
+        <Typography variant='h6'>Total resultados: {data && data.length}</Typography>
+      </Box>
+
       <AccordionStyle defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon/>}
@@ -103,10 +107,6 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
         </AccordionSummary>
         <AccordionDetails>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">En venta (10)</Typography>}
-            />
             <FormControlLabel
               control={<Checkbox checked={filters.isNew} onChange={e => setFilters(prevState => ({...prevState, isNew: e.target.checked}))}/>}
               label={<Typography variant="body1">Nuevo ({data && data.length > 0 && data.filter(x => x.isNew).length})</Typography>}

@@ -6,10 +6,11 @@ import SortDesktop from "../../components/products/SortDektop";
 import SortMobile from "../../components/products/SortMobile";
 import FiltersMobile from "../../components/products/FiltersMobile";
 import FiltersDesktop from "../../components/products/FiltersDesktop";
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import BreadCrumb from "../../components/BreadCrumb";
 import useGetProductsByCategory from "../../hooks/api/useGetProductsByCategory";
 import groq from "groq";
+import {useLocation} from 'react-router-dom';
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -25,11 +26,14 @@ const RootStyle = styled(Page)(({theme}) => ({
 
 
 export default function Figuras() {
+  const {pathname} = useLocation()
+  const category = pathname.replace('/categorias/', '')
   const [drawer, setDrawer] = useState(false);
-  const {data, loading, search} = useGetProductsByCategory('figuras');
+  const {data, loading, search} = useGetProductsByCategory(category);
   const [range, setRange] = useState([0, 20000]);
   const [slice, setSlice] = useState([0, 12]);
   const [page, setPage] = useState(1)
+  const [productsPerPage] = useState(12)
 
   const [filters, setFilters] = useState({
     isNew: true,
@@ -60,15 +64,32 @@ export default function Figuras() {
 }
 `
 
-
   useEffect(() => {
     search(query)
-  }, [filters, range, slice])
+  }, [filters, range, slice, pathname])
 
   function handlePaginationChange(event, value) {
     setPage(value);
-    setSlice(prevState => prevState.map(el => el * value))
   }
+
+  useEffect(() => {
+    if (page <= 1) {
+      setSlice([0, 12])
+    } else {
+      setSlice([slice[1], slice[1] * page])
+    }
+  }, [page]);
+
+  useEffect(() => {
+    setSlice([0, 12])
+    setPage(1);
+  }, [pathname]);
+
+  useEffect(() => {
+    return () => {
+      setPage(1);
+    }
+  }, [])
 
   return (
     <RootStyle title='Figuras | Kamiranime'>
@@ -76,7 +97,8 @@ export default function Figuras() {
       <Container>
         <Grid container>
           <Grid item xs={12} md={3}>
-            <FiltersDesktop category='figuras' setFilters={setFilters} filters={filters} range={range} setRange={setRange}/>
+            <FiltersDesktop category={category} setFilters={setFilters} filters={filters} range={range}
+                            setRange={setRange}/>
             <FiltersMobile setDrawer={setDrawer} drawer={drawer}/>
           </Grid>
           <Grid item xs={12} md={9} sx={{position: 'relative'}}>
@@ -98,7 +120,8 @@ export default function Figuras() {
               }
             </Box>
             <Box sx={{position: 'absolute', bottom: 10, right: 10}}>
-              <Pagination count={data && data.length / 12 < 1 ? 1 : data.length / 12} page={page} onChange={handlePaginationChange} color="primary"/>
+              <Pagination count={data && data.length > 0 && Math.ceil(data[0].length / productsPerPage)} page={page}
+                          onChange={handlePaginationChange} color="primary"/>
             </Box>
           </Grid>
         </Grid>

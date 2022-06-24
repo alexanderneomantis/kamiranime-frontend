@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import {useRef} from "react";
 import Slider from "react-slick";
 import PropTypes from "prop-types";
 // material
-import { useTheme, styled } from "@mui/material/styles";
+import {useTheme, styled} from "@mui/material/styles";
 import {
   Box,
   Card,
@@ -13,19 +13,20 @@ import {
   CardContent,
 } from "@mui/material";
 // utils
-import mockData from "../../utils/mock-data";
-import { CarouselControlsPagingBelow } from "./controls";
+// import mockData from "../../utils/mock-data";
+import {CarouselControlsPagingBelow} from "./controls";
+import Product from "../products/Product";
 
 // ----------------------------------------------------------------------
 
-const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
-  id: mockData.id(index),
-  title: mockData.text.title(index),
-  image: "/static/mock-images/feeds/feed_1.jpg",
-  description: mockData.text.description(index),
-}));
+// const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
+//   id: mockData.id(index),
+//   title: mockData.text.title(index),
+//   image: "/static/mock-images/feeds/feed_1.jpg",
+//   description: mockData.text.description(index),
+// }));
 
-const RootStyle = styled("div")(({ theme }) => ({
+const RootStyle = styled("div")(({theme}) => ({
   overflow: "hidden",
   position: "relative",
   "&:before, &:after": {
@@ -60,110 +61,51 @@ CarouselItem.propTypes = {
   item: PropTypes.object,
 };
 
-function CarouselItem() {
+function CarouselItem({item}) {
   return (
-    <Card sx={{ mx: 2, mb: 3 }}>
-      <CardMedia
-        component="img"
-        image="/static/dummy/dummy-producto.png"
-        alt="green iguana"
-      />
-      <Divider />
-      <CardContent>
-        <Typography variant="caption" color="primary.dark">
-          Torfresma
-        </Typography>
-        <Typography variant="h6">CUBETEADORA DE SEMI CONGELADO</Typography>
-
-        <Typography variant="caption">Venta</Typography>
-        <Typography variant="h6" color="primary.dark" sx={{ mb: 1 }}>
-          $5.000.000
-        </Typography>
-
-        <Typography variant="caption">Arriendo</Typography>
-        <Typography variant="h6" color="primary.dark" sx={{ mb: 1 }}>
-          $6.000.000
-        </Typography>
-
-        <Box display="flex">
-          <Rating name="read-only" value={4} readOnly />
-          <Box sx={{ ml: 2 }}>4,0</Box>
-        </Box>
-      </CardContent>
+    <Card sx={{mx: 1, mb: 2, maxWidth: 296}}>
+      <Product product={item}/>
     </Card>
   );
 }
 
-function CarouselItemNews() {
-  return (
-    <Card sx={{ mx: 2, mb: 3 }}>
-    <CardMedia
-      component="img"
-      image="/static/dummy/dummy-producto.png"
-      alt="green iguana"
-    />
-    <Divider />
-    <CardContent>
-      <Typography variant="h6">Título Ejemplo con título largo Título Ejemplo con título largo</Typography>
-  
-      <Typography variant="h6" color="#527701" sx={{ mb: 1 }}>
-         Hace 22 horas
-      </Typography>
-    </CardContent>
-  </Card>
-  )
-
-}
-
-export default function CarouselCenterMode({ type = 1  }) {
+export default function CarouselCenterMode({data}) {
   const carouselRef = useRef();
   const theme = useTheme();
 
   const settings = {
     dots: true,
     slidesToShow: 4,
+    autoplay: true,
     // centerMode: true,
     // centerPadding: "60px",
     rtl: Boolean(theme.direction === "rtl"),
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 2 },
+        settings: {slidesToShow: 2},
       },
       {
         breakpoint: 600,
-        settings: { slidesToShow: 2 },
+        settings: {slidesToShow: 2},
       },
       {
         breakpoint: 480,
-        settings: { slidesToShow: 2, centerPadding: "0" },
+        settings: {slidesToShow: 1},
       },
     ],
     ...CarouselControlsPagingBelow({
-      sx: { mt: 3 },
+      sx: {mt: 3},
     }),
   };
 
-  if  (type === 1) {
-    return (
-      <RootStyle>
-        <Slider ref={carouselRef} {...settings}>
-          {MOCK_CAROUSELS.map((item) => (
-            <CarouselItem key={item.title} item={item} />
-          ))}
-        </Slider>
-      </RootStyle>
-    );
-  } else {
-    return (
-      <RootStyle>
-        <Slider ref={carouselRef} {...settings}>
-          {MOCK_CAROUSELS.map((item) => (
-            <CarouselItemNews key={item.title} item={item} />
-          ))}
-        </Slider>
-      </RootStyle>
-    );
-  }
-
+  return (
+    <RootStyle>
+      <Slider ref={carouselRef} {...settings}>
+        {data.map((item) => (
+          <CarouselItem key={item._id} item={item}/>
+        ))}
+      </Slider>
+    </RootStyle>
+  );
 }

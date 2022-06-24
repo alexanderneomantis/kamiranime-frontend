@@ -2,9 +2,11 @@ import {Box, Button, TextField, Typography} from "@mui/material";
 import { useFormik, Form, FormikProvider } from "formik";
 import { FocusError } from 'focus-formik-error'
 import {CommentSchema} from "../../utils/formSchemas";
+// import * as sgMail from '@sendgrid/mail';
 
 export default function ContactForm() {
   const formSavedData = JSON.parse(localStorage.getItem('formFields'))
+  // const sendGridApiKey = process.env.REACT_APP_SENDGRID_API;
 
   const formik = useFormik({
     initialValues: {
@@ -16,7 +18,15 @@ export default function ContactForm() {
     onSubmit: async (values, { setSubmitting, resetForm}) => {
       try {
         setSubmitting(true);
-        await console.log(values);
+        // const message = {
+        //   from: values.email,
+        //   to: 'contacto@kamiranime.cl',
+        //   subject: 'Formulario de contacto',
+        //   text: values.comment,
+        // }
+        // await sgMail.send(message).then(() => {
+        //   console.log('message sent!');
+        // });
         resetForm();
         setSubmitting(false);
       } catch (error) {
