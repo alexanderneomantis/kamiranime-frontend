@@ -42,7 +42,7 @@ export default function Figuras() {
     product: ''
   });
 
-  const query = groq`
+  const bothTrueQuery = groq`
     *[_type == 'product' 
     && category->title ==  $category  
     && isNew == ${filters.isNew} 
@@ -63,9 +63,76 @@ export default function Figuras() {
     "length": count(*[_type == 'product'  && category->title ==  $category])
 }
 `
+  const allQuery = groq`
+    *[_type == 'product' 
+    && category->title ==  $category  
+    && price >= ${range[0]} 
+    && title match '*${filters.product}'
+    && price <= ${range[1]} ] 
+    | order(price ${filters.order})
+    [${slice[0]}...${slice[1]}] {
+    title,
+    "slug": slug.current,
+    price,
+    lastPrice,
+    images,
+    isNew,
+    isFeatured,
+    "category": category->title,
+    "length": count(*[_type == 'product'  && category->title ==  $category])
+}
+`
+  const notNewQuery = groq`
+    *[_type == 'product' 
+    && category->title ==  $category  
+    && isInStock == ${filters.isInStock}
+    && price >= ${range[0]} 
+    && title match '*${filters.product}'
+    && price <= ${range[1]} ] 
+    | order(price ${filters.order})
+    [${slice[0]}...${slice[1]}] {
+    title,
+    "slug": slug.current,
+    price,
+    lastPrice,
+    images,
+    isNew,
+    isFeatured,
+    "category": category->title,
+    "length": count(*[_type == 'product'  && category->title ==  $category])
+}
+`
+  const notInStockQuery = groq`
+    *[_type == 'product' 
+    && category->title ==  $category  
+    && isNew == ${filters.isNew}
+    && price >= ${range[0]} 
+    && title match '*${filters.product}'
+    && price <= ${range[1]} ] 
+    | order(price ${filters.order})
+    [${slice[0]}...${slice[1]}] {
+    title,
+    "slug": slug.current,
+    price,
+    lastPrice,
+    images,
+    isNew,
+    isFeatured,
+    "category": category->title,
+    "length": count(*[_type == 'product'  && category->title ==  $category])
+}
+`
 
   useEffect(() => {
-    search(query)
+    if (filters.isNew && filters.isInStock) {
+      search(bothTrueQuery);
+    } else if (filters.isNew && !filters.isInStock) {
+      search(notInStockQuery)
+    } else if (!filters.isNew && filters.isInStock) {
+      search(notNewQuery)
+    } else {
+      search(allQuery)
+    }
   }, [filters, range, slice, pathname])
 
   function handlePaginationChange(event, value) {
@@ -99,7 +166,8 @@ export default function Figuras() {
           <Grid item xs={12} md={3}>
             <FiltersDesktop category={category} setFilters={setFilters} filters={filters} range={range}
                             setRange={setRange}/>
-            <FiltersMobile setDrawer={setDrawer} drawer={drawer}/>
+            <FiltersMobile  category={category} setFilters={setFilters} filters={filters} range={range}
+                            setRange={setRange} setDrawer={setDrawer} drawer={drawer}/>
           </Grid>
           <Grid item xs={12} md={9} sx={{position: 'relative'}}>
             <SortDesktop filters={filters} setFilters={setFilters}/>

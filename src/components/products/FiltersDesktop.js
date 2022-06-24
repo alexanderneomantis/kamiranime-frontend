@@ -59,10 +59,6 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
 
   const query = groq`*[_type == 'product' && category->title ==  $category]`
 
-  console.log('data', data);
-  console.log('loading', loading);
-
-
   useEffect(() => {
     search(query)
   }, [])
@@ -73,7 +69,7 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
   };
 
   function valuetext(value) {
-    return `${value}°C`;
+    return `$${value}`;
   }
 
   return (

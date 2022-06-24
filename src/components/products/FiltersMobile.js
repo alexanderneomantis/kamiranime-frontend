@@ -12,6 +12,10 @@ import Checkbox from "@mui/material/Checkbox";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import {useState} from "react";
+import useGetProductsByCategory from "../../hooks/api/useGetProductsByCategory";
+import groq from "groq";
+import {useEffect} from "react";
+import SearchIcon from "@mui/icons-material/Search";
 
 // ----------------------------------------------------------------------
 
@@ -44,27 +48,33 @@ const AccordionStyle = styled(Accordion)(() => ({
 
 
 const BoxStyle = styled(Box)(() => ({
+  display: 'flex',
   padding: "14px 16px 8px 16px",
 }));
 
 // ----------------------------------------------------------------------
 
-export default function FiltersMobile({ drawer, setDrawer }) {
-  const [range, setRange] = useState([0, 10000]);
+export default function FiltersMobile({ drawer, setDrawer,category, range, setRange, filters, setFilters }) {
+  const {data, loading, search} = useGetProductsByCategory(category);
+  const [ product, setProduct ] = useState('')
 
   const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "")
+
+  const query = groq`*[_type == 'product' && category->title ==  $category]`
+
+  useEffect(() => {
+    search(query)
+  }, [])
 
 
   const handleChange = (event, newValue) => {
     setRange(newValue);
   };
 
-
   function valuetext(value) {
-    return `${value}°C`;
+    return `$${value}`;
   }
-
   return (
     <Drawer
       anchor="left"
@@ -99,9 +109,18 @@ export default function FiltersMobile({ drawer, setDrawer }) {
           label="Buscar…"
           variant="outlined"
           size="small"
+          value={product}
+          onChange={(e) => setProduct(e.target.value)}
           fullWidth
         />
+        <IconButton onClick={() => setFilters(prevState => ({...prevState, product: product}))}>
+          <SearchIcon style={{ color: '#DB2E71' }} />
+        </IconButton>
       </BoxStyle>
+
+      <Box p={2}>
+        <Typography variant='h6'>Total resultados: {data && data.length}</Typography>
+      </Box>
 
       <AccordionStyle
         defaultExpanded
@@ -117,16 +136,12 @@ export default function FiltersMobile({ drawer, setDrawer }) {
         <AccordionDetails>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">En venta (10)</Typography>}
+              control={<Checkbox checked={filters.isNew} onChange={e => setFilters(prevState => ({...prevState, isNew: e.target.checked}))}/>}
+              label={<Typography variant="body1">Nuevo ({data && data.length > 0 && data.filter(x => x.isNew).length})</Typography>}
             />
             <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">Nuevo (20)</Typography>}
-            />
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">En Stock (20)</Typography>}
+              control={<Checkbox checked={filters.isInStock} onChange={e => setFilters(prevState => ({...prevState, isInStock: e.target.checked}))}/>}
+              label={<Typography variant="body1">En Stock ({data && data.length > 0 && data.filter(x => x.isInStock).length})</Typography>}
             />
           </FormGroup>
         </AccordionDetails>
@@ -138,7 +153,7 @@ export default function FiltersMobile({ drawer, setDrawer }) {
           getAriaLabel={() => 'price slider'}
           value={range}
           size='large'
-          max={10000}
+          max={20000}
           min={0}
           onChange={handleChange}
           valueLabelDisplay="auto"
