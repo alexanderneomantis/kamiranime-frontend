@@ -26,7 +26,7 @@ const RootStyle = styled(Page)(({theme}) => ({
 }));
 
 
-export default function Figuras() {
+export default function Products() {
   const {pathname} = useLocation()
   const category = pathname.replace('/categorias/', '')
   const [drawer, setDrawer] = useState(false);
