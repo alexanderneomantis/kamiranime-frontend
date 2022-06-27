@@ -1,19 +1,19 @@
 import {Box, IconButton, Paper, styled, Typography} from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { urlForThumbnail } from '../../utils/image'
+import {urlForThumbnail} from '../../utils/image'
 import {useContext} from "react";
 import {Store} from "../../context/StoreContext";
-import { addCommas, removeNonNumeric } from '../../utils/format'
+import {addCommas, removeNonNumeric} from '../../utils/format'
 
 const UpsideBox = styled(Box)({
   position: 'relative',
   backgroundColor: '#F8EDF6',
   ":hover": {
-    "& .MuiBox-root" : {
+    "& .MuiBox-root": {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -25,10 +25,35 @@ const UpsideBox = styled(Box)({
 
 export default function Product({product = {}}) {
   const navigate = useNavigate()
-  const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
+  const {state: {cart: {cartItems}, favoriteItems}, dispatch} = useContext(Store)
+
+  // console.log(favoriteItems);
 
   function goToDetail() {
     navigate(`/categorias/${product.category}/${product.slug}`)
+  }
+
+  function addToFavorites(item) {
+    console.log(item);
+    const existItem = favoriteItems.find(x => x._key === item._id)
+    console.log(existItem)
+
+    if (existItem) {
+      dispatch({type: 'REMOVE_FAVORITE', payload: {
+          _key: item._id,
+        }})
+    } else {
+      dispatch({
+        type: 'ADD_FAVORITE', payload: {
+          _key: item._id,
+          title: item.title,
+          slug: item.slug,
+          category: item.category,
+          price: item.price,
+          image: urlForThumbnail(item.images[0].asset),
+        }
+      })
+    }
   }
 
   function addToCart(item) {
@@ -50,7 +75,7 @@ export default function Product({product = {}}) {
   }
 
   return (
-    <Paper sx={{ maxWidth: '300px' }}>
+    <Paper sx={{maxWidth: '300px'}}>
       <UpsideBox>
         <Box sx={{
           position: 'absolute',
@@ -61,28 +86,33 @@ export default function Product({product = {}}) {
           backgroundColor: 'none',
           display: 'none',
         }}>
-            <IconButton color='primary' onClick={() => addToCart(product)}><ShoppingCartIcon /></IconButton>
-            <IconButton color='primary' onClick={() => goToDetail()}><VisibilityIcon /></IconButton>
+          <IconButton color='primary' onClick={() => addToCart(product)}><ShoppingCartIcon/></IconButton>
+          <IconButton color='primary' onClick={() => goToDetail()}><VisibilityIcon/></IconButton>
         </Box>
         <Box
           component="img"
           src={urlForThumbnail(product.images[0].asset)}
           alt="Paella dish"
-          height='296px'
-          width='296px'
+          height='300px'
+          width='300px'
         />
       </UpsideBox>
-      <Box sx={{ p: 3 }}>
+      <Box sx={{p: 3}}>
         <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1}}>
           <Typography variant='body1' fontWeight='bold'>{product.title}</Typography>
-          <IconButton>
-            <FavoriteBorderIcon/>
+          <IconButton onClick={() => addToFavorites(product)}>
+            {
+              favoriteItems.filter(item => item._key === product._id).length > 0
+                ? <FavoriteIcon style={{ color: '#683A83' }} />
+                : <FavoriteBorderIcon style={{ color: '#683A83' }} />
+            }
           </IconButton>
         </Box>
         <Box sx={{display: 'flex'}}>
           {
             product.lastPrice &&
-            <Typography variant='body1' sx={{ textDecoration: 'line-through', mr: 2 }} fontWeight='bold' color='primary.main'>${addCommas(removeNonNumeric(product.lastPrice))}</Typography>
+            <Typography variant='body1' sx={{textDecoration: 'line-through', mr: 2}} fontWeight='bold'
+                        color='primary.main'>${addCommas(removeNonNumeric(product.lastPrice))}</Typography>
           }
           <Typography fontWeight='bold' variant='body1'>${addCommas(removeNonNumeric(product.price))}</Typography>
         </Box>

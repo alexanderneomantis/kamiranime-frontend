@@ -11,6 +11,7 @@ import BreadCrumb from "../../components/BreadCrumb";
 import useGetProductsByCategory from "../../hooks/api/useGetProductsByCategory";
 import groq from "groq";
 import {useLocation} from 'react-router-dom';
+import ProductSkeleton from "../../components/skeletons/ProductSkeleton";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -36,8 +37,8 @@ export default function Figuras() {
   const [productsPerPage] = useState(12)
 
   const [filters, setFilters] = useState({
-    isNew: true,
-    isInStock: true,
+    isNew: false,
+    isInStock: false,
     order: 'asc',
     product: ''
   });
@@ -58,6 +59,8 @@ export default function Figuras() {
     lastPrice,
     images,
     isNew,
+    _id
+    isInStock,
     isFeatured,
     "category": category->title,
     "length": count(*[_type == 'product'  && category->title ==  $category])
@@ -74,9 +77,11 @@ export default function Figuras() {
     title,
     "slug": slug.current,
     price,
+    _id,
     lastPrice,
     images,
     isNew,
+    isInStock,
     isFeatured,
     "category": category->title,
     "length": count(*[_type == 'product'  && category->title ==  $category])
@@ -96,7 +101,9 @@ export default function Figuras() {
     price,
     lastPrice,
     images,
+    _id,
     isNew,
+    isInStock,
     isFeatured,
     "category": category->title,
     "length": count(*[_type == 'product'  && category->title ==  $category])
@@ -114,9 +121,11 @@ export default function Figuras() {
     title,
     "slug": slug.current,
     price,
+    _id,
     lastPrice,
     images,
     isNew,
+    isInStock,
     isFeatured,
     "category": category->title,
     "length": count(*[_type == 'product'  && category->title ==  $category])
@@ -152,29 +161,42 @@ export default function Figuras() {
     setPage(1);
   }, [pathname]);
 
-  useEffect(() => {
-    return () => {
-      setPage(1);
-    }
-  }, [])
-
   return (
     <RootStyle title='Figuras | Kamiranime'>
       <BreadCrumb/>
       <Container>
         <Grid container>
           <Grid item xs={12} md={3}>
-            <FiltersDesktop category={category} setFilters={setFilters} filters={filters} range={range}
-                            setRange={setRange}/>
-            <FiltersMobile  category={category} setFilters={setFilters} filters={filters} range={range}
-                            setRange={setRange} setDrawer={setDrawer} drawer={drawer}/>
+            <FiltersDesktop
+              category={category}
+              setFilters={setFilters}
+              filters={filters}
+              range={range}
+              setRange={setRange}
+              length={data.length > 0 && data[0].length}
+              pathname={pathname}/>
+            <FiltersMobile
+              category={category}
+              setFilters={setFilters}
+              pathname={pathname}
+              filters={filters}
+              range={range}
+              setRange={setRange}
+              setDrawer={setDrawer}
+              drawer={drawer}
+              length={data.length > 0 && data[0].length}/>
           </Grid>
           <Grid item xs={12} md={9} sx={{position: 'relative'}}>
             <SortDesktop filters={filters} setFilters={setFilters}/>
-            <SortMobile setDrawer={setDrawer}/>
+            <SortMobile setDrawer={setDrawer} filters={filters} setFilters={setFilters}/>
 
             <Box sx={{p: 3}}>
-              {loading && <p>Loading...</p>}
+              {loading &&
+                <ProductSkeleton xs={12} sm={6} md={4} />
+              }
+              {
+                !loading && data.length < 1 && <p>No se encontraron resultados...</p>
+              }
               {
                 !loading && data.length > 0 &&
                 <Grid container spacing={3}>

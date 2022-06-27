@@ -38,6 +38,7 @@ function CarouselItem({item}) {
       <MHidden width='mdDown'>
         <Box
           component='img'
+          width='100%'
           src={urlForBanner(item.image.asset)}
           alt={item.image.alt}
         />
@@ -45,6 +46,7 @@ function CarouselItem({item}) {
       <MHidden width='mdUp'>
         <Box
           component='img'
+          width='100%'
           src={urlForBanner(item.image.asset)}
           alt={item.image.alt}
           height={350}

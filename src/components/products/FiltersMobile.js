@@ -54,7 +54,7 @@ const BoxStyle = styled(Box)(() => ({
 
 // ----------------------------------------------------------------------
 
-export default function FiltersMobile({ drawer, setDrawer,category, range, setRange, filters, setFilters }) {
+export default function FiltersMobile({ pathname, drawer, setDrawer,category, range, setRange, filters, setFilters, length }) {
   const {data, loading, search} = useGetProductsByCategory(category);
   const [ product, setProduct ] = useState('')
 
@@ -65,7 +65,7 @@ export default function FiltersMobile({ drawer, setDrawer,category, range, setRa
 
   useEffect(() => {
     search(query)
-  }, [])
+  }, [pathname])
 
 
   const handleChange = (event, newValue) => {
@@ -119,7 +119,7 @@ export default function FiltersMobile({ drawer, setDrawer,category, range, setRa
       </BoxStyle>
 
       <Box p={2}>
-        <Typography variant='h6'>Total resultados: {data && data.length}</Typography>
+        <Typography variant='h6'>Total resultados: {length}</Typography>
       </Box>
 
       <AccordionStyle
@@ -165,7 +165,7 @@ export default function FiltersMobile({ drawer, setDrawer,category, range, setRa
         </Box>
       </Box>
 
-      <AccordionStyle defaultExpanded>
+      <AccordionStyle disabled>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -173,24 +173,24 @@ export default function FiltersMobile({ drawer, setDrawer,category, range, setRa
         >
           <Typography variant="h6">Color</Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">Verde (4)</Typography>}
-            />
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={
-                <Typography variant="body1">Crema (10)</Typography>
-              }
-            />
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">Celeste (6)</Typography>}
-            />
-          </FormGroup>
-        </AccordionDetails>
+        {/*<AccordionDetails>*/}
+        {/*  <FormGroup>*/}
+        {/*    <FormControlLabel*/}
+        {/*      control={<Checkbox/>}*/}
+        {/*      label={<Typography variant="body1">Verde (4)</Typography>}*/}
+        {/*    />*/}
+        {/*    <FormControlLabel*/}
+        {/*      control={<Checkbox/>}*/}
+        {/*      label={*/}
+        {/*        <Typography variant="body1">Crema (10)</Typography>*/}
+        {/*      }*/}
+        {/*    />*/}
+        {/*    <FormControlLabel*/}
+        {/*      control={<Checkbox/>}*/}
+        {/*      label={<Typography variant="body1">Celeste (6)</Typography>}*/}
+        {/*    />*/}
+        {/*  </FormGroup>*/}
+        {/*</AccordionDetails>*/}
       </AccordionStyle>
 
     </Drawer>

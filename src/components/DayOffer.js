@@ -1,4 +1,4 @@
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box, Button, Grid, Skeleton, Typography} from "@mui/material";
 import dayOffer from "../assets/img/dayOffer.png";
 import pinkCircle from '../assets/img/circle.png'
 import moment from "moment";
@@ -32,7 +32,7 @@ export default function DeyOffer() {
 
   return (
     <Box>
-      {loading && <p>Loading...</p>}
+      {loading && <Skeleton variant='rectangular' width='100%' height={600} />}
       {
         !loading && data && data.isVisible &&
         <Box

@@ -4,27 +4,13 @@ import PropTypes from "prop-types";
 // material
 import {useTheme, styled} from "@mui/material/styles";
 import {
-  Box,
-  Card,
-  CardMedia,
-  Divider,
-  Typography,
-  Rating,
-  CardContent,
+  Paper,
 } from "@mui/material";
-// utils
-// import mockData from "../../utils/mock-data";
 import {CarouselControlsPagingBelow} from "./controls";
 import Product from "../products/Product";
 
 // ----------------------------------------------------------------------
 
-// const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
-//   id: mockData.id(index),
-//   title: mockData.text.title(index),
-//   image: "/static/mock-images/feeds/feed_1.jpg",
-//   description: mockData.text.description(index),
-// }));
 
 const RootStyle = styled("div")(({theme}) => ({
   overflow: "hidden",
@@ -63,9 +49,9 @@ CarouselItem.propTypes = {
 
 function CarouselItem({item}) {
   return (
-    <Card sx={{mx: 1, mb: 2, maxWidth: 296}}>
+    <Paper elevation={1} sx={{mx: 1, mb: 2, maxWidth: 296}}>
       <Product product={item}/>
-    </Card>
+    </Paper>
   );
 }
 

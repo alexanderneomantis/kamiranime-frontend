@@ -65,7 +65,7 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 export default function Header() {
   const isOffset = useOffSetTop(1);
   const {pathname} = useLocation();
-  const {state: {cart: {cartItems}}, dispatch} = useContext(Store)
+  const {state: {cart: {cartItems}, favoriteItems}, dispatch} = useContext(Store)
   const isHome = pathname === "/";
   const navigate = useNavigate();
   const [total, setTotal] = useState(0)
@@ -135,11 +135,11 @@ export default function Header() {
           </MHidden>
 
           <Box>
-            <RouterLink to='/buscar'>
-              <IconButton aria-label="Lupa de busqueda">
-                <img width={25} height={25} src={search} alt="search icon"/>
-              </IconButton>
-            </RouterLink>
+            {/*<RouterLink to='/buscar'>*/}
+            {/*  <IconButton aria-label="Lupa de busqueda">*/}
+            {/*    <img width={25} height={25} src={search} alt="search icon"/>*/}
+            {/*  </IconButton>*/}
+            {/*</RouterLink>*/}
 
             {/*<RouterLink to='/carrito'>*/}
             <StyledBadge badgeContent={cartItems.length} color='primary'>
@@ -190,9 +190,11 @@ export default function Header() {
             {/*</RouterLink>*/}
 
             <RouterLink to='/favoritos'>
-              <IconButton aria-label="vista de favoritos">
-                <img width={25} height={25} src={heart} alt="fav icon"/>
-              </IconButton>
+              <StyledBadge badgeContent={favoriteItems.length} color='primary'>
+                <IconButton aria-label="vista de favoritos">
+                  <img width={25} height={25} src={heart} alt="fav icon"/>
+                </IconButton>
+              </StyledBadge>
             </RouterLink>
           </Box>
 

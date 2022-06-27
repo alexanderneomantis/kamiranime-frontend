@@ -1,9 +1,11 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import {writeClient} from "../../utils/client";
+import {AlertContext} from "../../context/AlertContext";
 
 export default function useSendComment(fn) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const {initAlert} = useContext(AlertContext);
 
   async function postData(payload) {
     try {
@@ -18,7 +20,7 @@ export default function useSendComment(fn) {
       const response = await writeClient.create(newComment);
       console.log(response);
       if (response !== null) {
-        console.log('congrats!')
+        initAlert(true,  'success', 'Se envio tu comentario con exito!, en unos minutos aparecera arriba...')
         await fn()
       }
       setLoading(false)

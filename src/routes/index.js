@@ -53,6 +53,7 @@ export default function Router() {
       children: [
         {path: '', element: <Home />},
         {path: 'carrito', element: <Cart />},
+        {path: 'favoritos', element: <Favorites />},
         {path: 'contactanos', element: <ContactUs />},
         {path: 'preguntas-frecuentes', element: <Questions />},
       ]
@@ -65,46 +66,6 @@ export default function Router() {
         {path: ':category/:slug', element: <ProductDetail />},
       ]
     },
-    // {
-    //   path: 'peluches',
-    //   element: <MainLayout />,
-    //   children: [
-    //     {path: '', element: <Peluches />},
-    //     {path: ':slug', element: <PelucheDetail />},
-    //   ]
-    // },
-    // {
-    //   path: 'figuras',
-    //   element: <MainLayout />,
-    //   children: [
-    //     {path: '', element: <Figuras />},
-    //     {path: ':slug', element: <FiguraDetail />},
-    //   ]
-    // },
-    // {
-    //   path: 'accesorios',
-    //   element: <MainLayout />,
-    //   children: [
-    //     {path: '', element: <Accesorios />},
-    //     {path: ':slug', element: <AccesorioDetail />},
-    //   ]
-    // },
-    // {
-    //   path: 'lamparas',
-    //   element: <MainLayout />,
-    //   children: [
-    //     {path: '', element: <Lampara />},
-    //     {path: ':slug', element: <LamparaDetail />},
-    //   ]
-    // },
-    // {
-    //   path: 'acrilicos',
-    //   element: <MainLayout />,
-    //   children: [
-    //     {path: '', element: <Acrilicos />},
-    //     {path: ':slug', element: <AcrilicoDetail />},
-    //   ]
-    // },
   ])
 }
 
@@ -115,16 +76,9 @@ const NotFound = Loadable(lazy(() => import('../pages/NotFound')));
 const Home = Loadable(lazy(() => import('../pages/Home')));
 const Questions = Loadable(lazy(() => import('../pages/Questions')));
 const Cart = Loadable(lazy(() => import('../pages/Cart')));
-// const Peluches = Loadable(lazy(() => import('../pages/peluches')));
-// const PelucheDetail = Loadable(lazy(() => import('../pages/peluches/Detail')));
-// const Acrilicos = Loadable(lazy(() => import('../pages/acrilicos')));
-// const AcrilicoDetail = Loadable(lazy(() => import('../pages/acrilicos/Detail')));
-// const Accesorios = Loadable(lazy(() => import('../pages/accesorios')));
-// const AccesorioDetail = Loadable(lazy(() => import('../pages/accesorios/Detail')));
-const ProductSearch = Loadable(lazy(() => import('../pages/figuras')));
-const ProductDetail = Loadable(lazy(() => import('../pages/figuras/Detail')));
-// const Lampara = Loadable(lazy(() => import('../pages/lamparas')));
-const LamparaDetail = Loadable(lazy(() => import('../pages/lamparas/Detail')));
+const Favorites = Loadable(lazy(() => import('../pages/Favorites')));
+const ProductSearch = Loadable(lazy(() => import('../pages/products')));
+const ProductDetail = Loadable(lazy(() => import('../pages/products/Detail')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 
 
