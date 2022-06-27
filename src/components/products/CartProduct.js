@@ -70,9 +70,9 @@ export default function CartProduct({ product }) {
           </Box>
           <Typography sx={{ cursor: 'pointer' }} variant='h6' onClick={() => navigate(`/${product.category}/${product.slug}`)}>{product.title}</Typography>
           <Box sx={{display: 'flex', alignItems: 'center', my: 3, justifyContent: 'center'}}>
-            <IconButton onClick={() => setCount(prevState => --prevState)} color='primary'><RemoveIcon/></IconButton>
-            <Typography sx={{width: '50px'}} align='center'>{count}</Typography>
-            <IconButton onClick={() => setCount(prevState => ++prevState)} color='primary'><AddIcon/></IconButton>
+            <IconButton onClick={() => updateCartHandler(product, product.quantity - 1)} color='primary'><RemoveIcon/></IconButton>
+            <Typography sx={{width: '50px'}} align='center'>{product.quantity}</Typography>
+            <IconButton onClick={() => updateCartHandler(product, product.quantity + 1)} color='primary'><AddIcon/></IconButton>
           </Box>
           <Typography variant='h3'>$ {addCommas(removeNonNumeric(product.price))}</Typography>
           <IconButton variant='contained' color='primary' onClick={() => removeItemHandler(product)}>
