@@ -15,7 +15,7 @@ const menuConfig = [
   {
     title: "Figuras",
     icon: <Icon icon={homeFill} {...ICON_SIZE} />,
-    path: "/categorias/figuras1",
+    path: "/categorias/figuras",
   },
   {
     title: "Peluches",
