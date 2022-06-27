@@ -88,7 +88,7 @@ export default function DeyOffer() {
                 </Box>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center', mt: 5}}>
-                <Button variant='outlined' onClick={() => navigate(`/${data.product.category}/${data.product.slug}`)}>Comprar ahora</Button>
+                <Button variant='outlined' onClick={() => navigate(`/categorias/${data.product.category}/${data.product.slug}`)}>Comprar ahora</Button>
               </Box>
             </Grid>
           </Grid>
