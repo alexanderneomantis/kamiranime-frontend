@@ -50,7 +50,7 @@ const AccordionStyle = styled(Accordion)(() => ({
 
 // ----------------------------------------------------------------------
 
-export default function FiltersDesktop({ category, range, setRange, filters, setFilters }) {
+export default function FiltersDesktop({ category, range, setRange, filters, setFilters, length, pathname }) {
   const {data, loading, search} = useGetProductsByCategory(category);
   const [ product, setProduct ] = useState('')
 
@@ -59,13 +59,9 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
 
   const query = groq`*[_type == 'product' && category->title ==  $category]`
 
-  console.log('data', data);
-  console.log('loading', loading);
-
-
   useEffect(() => {
     search(query)
-  }, [])
+  }, [pathname])
 
 
   const handleChange = (event, newValue) => {
@@ -73,7 +69,7 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
   };
 
   function valuetext(value) {
-    return `${value}°C`;
+    return `$${value}`;
   }
 
   return (
@@ -85,6 +81,7 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
           variant="outlined"
           size="small"
           value={product}
+          onKeyDown={e => e.keyCode === 13 && setFilters(prevState => ({...prevState, product: product}))}
           onChange={(e) => setProduct(e.target.value)}
           fullWidth
         />
@@ -92,6 +89,10 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
           <SearchIcon style={{ color: '#DB2E71' }} />
         </IconButton>
       </BoxStyle>
+
+      <Box p={2}>
+        <Typography variant='h6'>Total resultados: {length}</Typography>
+      </Box>
 
       <AccordionStyle defaultExpanded>
         <AccordionSummary
@@ -103,10 +104,6 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
         </AccordionSummary>
         <AccordionDetails>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">En venta (10)</Typography>}
-            />
             <FormControlLabel
               control={<Checkbox checked={filters.isNew} onChange={e => setFilters(prevState => ({...prevState, isNew: e.target.checked}))}/>}
               label={<Typography variant="body1">Nuevo ({data && data.length > 0 && data.filter(x => x.isNew).length})</Typography>}
@@ -137,7 +134,7 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
         </Box>
       </Box>
 
-      <AccordionStyle defaultExpanded>
+      <AccordionStyle disabled>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon/>}
           aria-controls="panel1a-content"
@@ -145,24 +142,24 @@ export default function FiltersDesktop({ category, range, setRange, filters, set
         >
           <Typography variant="h6">Color</Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">Verde (4)</Typography>}
-            />
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={
-                <Typography variant="body1">Crema (10)</Typography>
-              }
-            />
-            <FormControlLabel
-              control={<Checkbox/>}
-              label={<Typography variant="body1">Celeste (6)</Typography>}
-            />
-          </FormGroup>
-        </AccordionDetails>
+        {/*<AccordionDetails>*/}
+        {/*  <FormGroup>*/}
+        {/*    <FormControlLabel*/}
+        {/*      control={<Checkbox/>}*/}
+        {/*      label={<Typography variant="body1">Verde (4)</Typography>}*/}
+        {/*    />*/}
+        {/*    <FormControlLabel*/}
+        {/*      control={<Checkbox/>}*/}
+        {/*      label={*/}
+        {/*        <Typography variant="body1">Crema (10)</Typography>*/}
+        {/*      }*/}
+        {/*    />*/}
+        {/*    <FormControlLabel*/}
+        {/*      control={<Checkbox/>}*/}
+        {/*      label={<Typography variant="body1">Celeste (6)</Typography>}*/}
+        {/*    />*/}
+        {/*  </FormGroup>*/}
+        {/*</AccordionDetails>*/}
       </AccordionStyle>
     </Box>
   );

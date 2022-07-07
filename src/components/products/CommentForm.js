@@ -5,12 +5,14 @@ import { useFormik, Form, FormikProvider } from "formik";
 import { FocusError } from 'focus-formik-error'
 import useSendComment from "../../hooks/api/useSendComment";
 import {CommentSchema} from "../../utils/formSchemas";
-import {useState} from "react";
+import {useState, useContext} from "react";
+import {AlertContext} from "../../context/AlertContext";
 
 export default function CommentForm({ product, reload }) {
   const {send} = useSendComment(() => reload())
   const formSavedData = JSON.parse(localStorage.getItem('formFields'))
   const [isChecked, setChecked] = useState(!!formSavedData)
+
 
   const formik = useFormik({
     initialValues: {

@@ -21,7 +21,12 @@ export default function GlobalSnackbar() {
 
 
   return (
-    <Snackbar open={alert.isOpen} autoHideDuration={3000} onClose={handleClose}>
+    <Snackbar
+      open={alert.isOpen}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
       <Alert onClose={handleClose} severity={alert.type} sx={{ width: '100%', color: '#fff' }}>
         {alert.message}
       </Alert>

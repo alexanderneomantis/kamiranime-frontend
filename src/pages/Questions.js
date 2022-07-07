@@ -3,6 +3,7 @@ import Page from "../components/Page";
 import QuestionsList from "../components/questions/QuestionsList";
 import useGetQuestions from "../hooks/api/useGetQuestions";
 import {Box, Container, Typography} from "@mui/material";
+import QuestionsSkeleton from "../components/skeletons/QuestionsSkeleton";
 
 
 const APP_BAR_MOBILE = 64;
@@ -22,14 +23,19 @@ export default function Questions() {
 
   return (
     <RootStyle>
-      <Container sx={{ my: 2 }}>
+      <Container sx={{my: 2}}>
         {
-          loading && <p>loading...</p>
+          loading &&
+          <>
+            <QuestionsSkeleton/>
+            <QuestionsSkeleton/>
+            <QuestionsSkeleton/>
+          </>
         }
         {
           !loading && data && data.length > 0 && data.map(section => (
             <Box key={section._id}>
-              <Typography variant='h4' sx={{ my: 3 }} color='#683A83' >{section.section}</Typography>
+              <Typography variant='h4' sx={{my: 3}} color='#683A83'>{section.section}</Typography>
               <QuestionsList list={section.questions}/>
             </Box>
           ))

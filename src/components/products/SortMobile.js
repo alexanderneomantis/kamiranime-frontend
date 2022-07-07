@@ -10,7 +10,12 @@ import {
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
-export default function SortMobile({ setDrawer }) {
+const options = [
+  {id: 1, value: 'desc', title: 'Precio mayor a menor'},
+  {id: 1, value: 'asc', title: 'Precio menor a mayor'},
+]
+
+export default function SortMobile({ setDrawer, filters, setFilters }) {
   return (
     <Grid container sx={{ display: { xs: "flex", md: "none" } }}>
       <Grid
@@ -38,12 +43,17 @@ export default function SortMobile({ setDrawer }) {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             placeholder="Ordenar por"
-            value=""
+            value={filters.order}
+            onChange={e => setFilters(prevState => ({...prevState, order: e.target.value}))}
           >
             <MenuItem value="" disabled>
               Ordenar por
             </MenuItem>
-            <MenuItem value="Precio">Precio</MenuItem>
+            {
+              options.map(el => (
+                <MenuItem key={el.id} value={el.value}>{el.title}</MenuItem>
+              ))
+            }
           </Select>
         </FormControl>
       </Grid>

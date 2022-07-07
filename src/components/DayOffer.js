@@ -1,4 +1,4 @@
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box, Button, Grid, Skeleton, Typography} from "@mui/material";
 import dayOffer from "../assets/img/dayOffer.png";
 import pinkCircle from '../assets/img/circle.png'
 import moment from "moment";
@@ -29,9 +29,10 @@ export default function DeyOffer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventTime]);
 
+
   return (
     <Box>
-      {loading && <p>Loading...</p>}
+      {loading && <Skeleton variant='rectangular' width='100%' height={600} />}
       {
         !loading && data && data.isVisible &&
         <Box
@@ -87,7 +88,7 @@ export default function DeyOffer() {
                 </Box>
               </Box>
               <Box sx={{display: 'flex', justifyContent: 'center', mt: 5}}>
-                <Button variant='outlined' onClick={() => navigate(`/${data.product.category}/${data.product.slug}`)}>Comprar ahora</Button>
+                <Button variant='outlined' onClick={() => navigate(`/categorias/${data.product.category}/${data.product.slug}`)}>Comprar ahora</Button>
               </Box>
             </Grid>
           </Grid>

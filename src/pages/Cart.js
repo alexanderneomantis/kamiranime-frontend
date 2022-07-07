@@ -22,6 +22,7 @@ import Checkbox from "@mui/material/Checkbox";
 import {Store} from "../context/StoreContext";
 import {addCommas, removeNonNumeric} from '../utils/format'
 import { regions, towns } from '../utils/staticData'
+import {useNavigate} from 'react-router-dom';
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -41,6 +42,7 @@ const StyledCell = styled(TableCell)(() => ({
 
 
 export default function Cart() {
+  const navigate = useNavigate();
   const [checkoutValues, setCheckoutValues] = useState({
     city: '',
     region: '',
@@ -79,7 +81,9 @@ export default function Cart() {
         <Typography sx={{my: 5}} variant='h1' color='primary.dark'>Los productos de tu carrito</Typography>
 
         <MHidden width='mdDown'>
-          <TableContainer>
+          <Grid  container spacing={2}>
+            <Grid item xs={9}>
+            <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
@@ -102,13 +106,93 @@ export default function Cart() {
             </Table>
           </TableContainer>
           {cartItems.length < 1 && <Typography sx={{p: 5}}>No hay productos en el carrito...</Typography>}
+            </Grid>
+            <Grid item xs={3}>
+            <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%'}}>
+              <Typography variant='h4' sx={{mb: 2}}>Carrito</Typography>
+              <Box sx={{mb: 2, display: 'flex', justifyContent: 'space-between'}}>
+                <Typography variant='body1'>total productos</Typography>
+                <Typography variant='h6'>$ {addCommas(removeNonNumeric(getSubTotal()))}</Typography>
+              </Box>
+              <Box mb={5}>
+                <Typography>Total envió</Typography>
+                <Box display='flex' alignItems='center' justifyContent='space-between'>
+                  <FormControlLabel
+                    control={<Checkbox onChange={(e) => handleDeliveryExtra(e.target.checked, 2000)}/>}
+                    label={<Typography variant="body1">Standar </Typography>}
+                  />
+                  <Typography> $2.000</Typography>
+                </Box>
+                <Box display='flex' alignItems='center' justifyContent='space-between'>
+                  <FormControlLabel
+                    control={<Checkbox onChange={(e) => handleDeliveryExtra(e.target.checked, 5000)}/>}
+                    label={<Typography variant="body1">Express</Typography>}
+                  />
+                  <Typography> $5.000</Typography>
+                </Box>
+              </Box>
+
+              <Box display='flex' flexDirection='column' alignItems='center'>
+                <Typography variant='h4' color='primary'>Total carrito</Typography>
+                <Typography variant='h3' color='primary'>$ {addCommas(removeNonNumeric(total))}</Typography>
+              </Box>
+
+              <Button size='small'  onClick={() => navigate('/finalizar-compra')} sx={{width: '100%', mt: 3, color: '#fff', backgroundColor: '#DB2E71'}}>
+                Finalizar compra
+              </Button>
+
+              <Button  size='small' onClick={() => navigate('/categorias/figuras')} color='primary' sx={{width: '100%', mt: 3}}>
+                Seguir comprando
+              </Button>
+
+            </Box>
+          </Grid>
+          </Grid>
         </MHidden>
 
         <MHidden width='mdUp'>
           {cartItems.length > 0 && cartItems.map((el, i) =>  <CartProduct product={el} key={el._key + i}/>)}
           {cartItems.length < 1 && <Typography sx={{p: 5}}>No hay productos en el carrito...</Typography>}
+          <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%', my: 5}}>
+              <Typography variant='h4' sx={{mb: 2}}>Carrito</Typography>
+              <Box sx={{mb: 2, display: 'flex', justifyContent: 'space-between'}}>
+                <Typography variant='body1'>total productos</Typography>
+                <Typography variant='h6'>$ {addCommas(removeNonNumeric(getSubTotal()))}</Typography>
+              </Box>
+              <Box mb={5}>
+                <Typography>Total envió</Typography>
+                <Box display='flex' alignItems='center' justifyContent='space-between'>
+                  <FormControlLabel
+                    control={<Checkbox onChange={(e) => handleDeliveryExtra(e.target.checked, 2000)}/>}
+                    label={<Typography variant="body1">Standar </Typography>}
+                  />
+                  <Typography> $2.000</Typography>
+                </Box>
+                <Box display='flex' alignItems='center' justifyContent='space-between'>
+                  <FormControlLabel
+                    control={<Checkbox onChange={(e) => handleDeliveryExtra(e.target.checked, 5000)}/>}
+                    label={<Typography variant="body1">Express</Typography>}
+                  />
+                  <Typography> $5.000</Typography>
+                </Box>
+              </Box>
+
+              <Box display='flex' justifyContent='space-between' alignItems='center'>
+                <Typography variant='h4' color='primary'>Total carrito</Typography>
+                <Typography variant='h3' color='primary'>$ {addCommas(removeNonNumeric(total))}</Typography>
+              </Box>
+
+              <Button size='small'  onClick={() => navigate('/finalizar-compra')} sx={{width: '100%', mt: 3, color: '#fff', backgroundColor: '#DB2E71'}}>
+                Finalizar compra
+              </Button>
+
+              <Button  size='small' onClick={() => navigate('/categorias/figuras')} color='primary' sx={{width: '100%', mt: 3}}>
+                Seguir comprando
+              </Button>
+
+            </Box>
         </MHidden>
-        <Grid container spacing={2} sx={{my: 5}}>
+        {/* <Grid container spacing={2} sx={{my: 5}}>
           <Grid item xs={12} md={4}>
             <Box sx={{backgroundColor: '#F4F4F4', p: 4, height: '100%'}}>
               <Typography variant='h4' sx={{mb: 2}}>Estimado de envío</Typography>
@@ -209,7 +293,7 @@ export default function Cart() {
             </Box>
           </Grid>
 
-        </Grid>
+        </Grid> */}
       </Container>
     </RootStyle>
   )

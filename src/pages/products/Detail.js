@@ -22,7 +22,10 @@ import {PortableText} from "@portabletext/react";
 import ProductComment from "../../components/products/ProductComment";
 import CommentForm from "../../components/products/CommentForm";
 import {Store} from '../../context/StoreContext'
-// import CarouselBasic3 from "../../components/carousel/CarouselBasic3";
+import CarouselCenterMode from "../../components/carousel/CarouselCenterMode";
+import UseGetRandomProducts from "../../hooks/api/useGetRandomProducts";
+import {CarouselBasic3} from "../../components/carousel";
+import ProductDetailSkeleton from "../../components/skeletons/ProductDetailSkeleton";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 88;
@@ -41,6 +44,7 @@ export default function Detail() {
   const {state: {cart: {cartItems}}, dispatch} = useContext(Store);
   const {slug} = useParams()
   const {data, comments, reFetcher, loading} = useGetProductBySlug(slug);
+  const [similarProducts, similarLoading] = UseGetRandomProducts();
   const [count, setCount] = useState(1);
   const [tabValue, setTabValue] = useState(1);
 
@@ -69,7 +73,7 @@ export default function Detail() {
   return (
     <RootStyle>
       <BreadCrumb/>
-      {loading && <p>loading...</p>}
+      {loading && <ProductDetailSkeleton />}
       {
         !loading && data && data.length > 0 &&
         <Container>
@@ -77,12 +81,16 @@ export default function Detail() {
             <Grid item xs={12} md={6}>
                 {
                   data[0].images && data[0].images.length > 0 &&
-                  // <CarouselBasic3 data={data[0].images} />
-                  <Box
-                  sx={{ backgroundColor: '#F8EDF6', width: '100%' }}
-                  component='img'
-                  src={urlFor(data[0].images[0])}
-                  />
+                  <Box sx={{
+                    width: "100%",
+                    borderRadius: 1,
+                    // boxShadow: "0px 3px 6px #00000029;",
+                    position: 'relative'
+                  }}>
+                    <Box sx={{overflow: "hidden", position: "relative"}}>
+                      <CarouselBasic3 data={data[0].images} type='product' />
+                    </Box>
+                  </Box>
                 }
 
             </Grid>
@@ -167,16 +175,11 @@ export default function Detail() {
             </Typography>
           </Box>
           {/*TODO hacer un carousel component de productos " destacados" y que sea siempre 4 aleatorios...  o mas ? y hacer schema de timer y de HOT SALE*/}
-          {/*<Grid container spacing={2}>*/}
-          {/*  {*/}
-          {/*    [...Array(4)].map((el, i) => (*/}
-          {/*      <Grid item xs={12} sm={6} md={3} key={i + 1}>*/}
-          {/*        <Product />*/}
-          {/*      </Grid>*/}
-          {/*    ))*/}
-          {/*  }*/}
-          {/*</Grid>*/}
-        </Container>
+          {
+            !similarLoading && similarProducts && similarProducts.length > 0 &&
+            <CarouselCenterMode data={similarProducts} />
+          }
+      </Container>
       }
     </RootStyle>
   )
