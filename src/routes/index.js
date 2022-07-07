@@ -53,6 +53,7 @@ export default function Router() {
       children: [
         {path: '', element: <Home />},
         {path: 'carrito', element: <Cart />},
+        {path: 'finalizar-compra', element: <FinishCheckout />},
         {path: 'favoritos', element: <Favorites />},
         {path: 'contactanos', element: <ContactUs />},
         {path: 'preguntas-frecuentes', element: <Questions />},
@@ -80,5 +81,6 @@ const Favorites = Loadable(lazy(() => import('../pages/Favorites')));
 const ProductSearch = Loadable(lazy(() => import('../pages/products')));
 const ProductDetail = Loadable(lazy(() => import('../pages/products/Detail')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
+const FinishCheckout = Loadable(lazy(() => import('../pages/FinishCheckout')));
 
 
